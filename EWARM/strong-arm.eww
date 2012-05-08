@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\strong-arm.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\strong-arm-test.ewp</path>
+  </project>
+  <batchBuild/>
+</workspace>
+
+
