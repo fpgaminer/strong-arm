@@ -91,6 +91,52 @@ START_TEST (test_sub)
 }
 END_TEST
 
+START_TEST (test_mul)
+{
+	FF_NUM d;
+	
+	const FF_NUM a = {0xD249A3F4,0x22DD2A76,0xCC065A3D,0x7037BB0D,0xF5532C1C,0x19B55395,0xE4885FD0,0x26A466B2};
+	const FF_NUM b = {0x05948EAA,0x49B868D2,0x9647C8A9,0x629A3803,0x33D946DC,0x7F5E1D1C,0x6E9AD671,0xECF579FE};
+	const FF_NUM c = {0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+	const FF_NUM p1 = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
+	const FF_NUM p2 = {0x00000047,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+	const FF_NUM r1 = {0xE5EAB34B,0x550552FF,0x91C927A3,0x7542D3D1,0xA7217062,0x72817238,0xE85F7342,0xC1981797};
+	const FF_NUM r2 = {0x00000014,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+	const FF_NUM r4 = {0xB2F0531D,0x873E97E0,0x2DECF6DF,0x12B8CBBD,0xCAF8C266,0x5FB8A983,0xA0D7262C,0xF78F8F6D};
+
+	ff_mul (&d, &a, &b, &p1);
+	mu_assert (ff_compare (&d, &r1) == 0, "ff_mul should multiply arguments (mod 2^256-1).");
+	
+	ff_mul (&d, &a, &b, &p2);
+	mu_assert (ff_compare (&d, &r2) == 0, "ff_mul should multiply arguments (mod 0x47).");
+	
+	ff_mul (&d, &a, &c, &p1);
+	mu_assert (ff_is_zero (&d), "ff_mul should return 0 when one of the arguments is 0.");
+	
+	ff_copy (&d, &a);
+	ff_mul (&d, &d, &d, &p1);
+	mu_assert (ff_compare (&d, &r4) == 0, "ff_mul should allow the destination argument to be the same as the source arguments.");
+}
+END_TEST
+
+START_TEST (test_inv)
+{
+	FF_NUM d;
+	
+	const FF_NUM a = {0xD249A3F4,0x22DD2A76,0xCC065A3D,0x7037BB0D,0xF5532C1C,0x19B55395,0xE4885FD0,0x26A466B2};
+	const FF_NUM p1 = {0xFFFFFC2F,0xFFFFFFFE,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
+	const FF_NUM p2 = {0x0000000D,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+	
+	ff_inv (&d, &a, &p1);
+	ff_mul (&d, &d, &a, &p1);
+	mu_assert (ff_is_one (&d), "ff_inv on argument x should return a number, y, such that x * y = 1 (mod secp256k1 prime).");
+	
+	ff_inv (&d, &a, &p2);
+	ff_mul (&d, &d, &a, &p2);
+	mu_assert (ff_is_one (&d), "ff_inv on argument x should return a number, y, such that x * y = 1 (mod 0x0D).");
+}
+END_TEST
+
 
 static char *all_tests ()
 {
@@ -98,6 +144,8 @@ static char *all_tests ()
 	mu_run_test (test_copy);
 	mu_run_test (test_add);
 	mu_run_test (test_sub);
+	mu_run_test (test_mul);
+	mu_run_test (test_inv);
 	
 	return 0;
 }

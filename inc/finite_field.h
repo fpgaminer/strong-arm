@@ -47,6 +47,7 @@ void ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF
 void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p);
 
 // out = a ^ -1 (mod p)
+// NOTE: p must be prime!
 void ff_inv (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const p);
 
 // out = a >> 1
