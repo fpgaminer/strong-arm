@@ -109,25 +109,42 @@ int ff_compare (FF_NUM const *const a, FF_NUM const *const b)
 
 void ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p)
 {
-	if (_ff_add (out, a, b) || (ff_compare (out, p) >= 0))
+	FF_NUM ta, tb;
+	const FF_NUM *ma = a, *mb = b;
+	
+	// Arguments must be within the finite field
+	if (ff_compare (a, p) >= 0) {
+		_ff_mod (&ta, a, p);
+		ma = &ta;
+	}
+	
+	if (ff_compare (b, p) >= 0) {
+		_ff_mod (&tb, b, p);
+		mb = &tb;
+	}
+	
+	if (_ff_add (out, ma, mb) || (ff_compare (out, p) >= 0))
 		_ff_sub (out, out, p);
-
-	// Worst case scenario, if a or b were not (mod p), then the result could be
-	// larger than p. We handle that below.
-	if (ff_compare (out, p) >= 0)
-		_ff_mod (out, out, p);
-
 }
 
 void ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p)
 {
-	if (_ff_sub (out, a, b))
+	FF_NUM ta, tb;
+	const FF_NUM *ma = a, *mb = b;
+	
+	// Arguments must be within the finite field
+	if (ff_compare (a, p) >= 0) {
+		_ff_mod (&ta, a, p);
+		ma = &ta;
+	}
+	
+	if (ff_compare (b, p) >= 0) {
+		_ff_mod (&tb, b, p);
+		mb = &tb;
+	}
+	
+	if (_ff_sub (out, ma, mb))
 		_ff_add (out, out, p);
-
-	// Worst case scenario, if a or b were not (mod p), then the result could be
-	// larger than p. We handle that below.
-	if (ff_compare (out, p) >= 0)
-		_ff_mod (out, out, p);
 }
 
 uint32_t ff_num_bits (FF_NUM const *const a)

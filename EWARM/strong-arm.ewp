@@ -1845,10 +1845,10 @@
     </file>
   </group>
   <file>
-    <name>$PROJ_DIR$\..\strong-arm\finite_field.h</name>
+    <name>$PROJ_DIR$\..\inc\finite_field.h</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\..\src\random.h</name>
+    <name>$PROJ_DIR$\..\inc\random.h</name>
   </file>
 </project>
 
