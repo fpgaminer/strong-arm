@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <finite_field.h>
 
-// A large FF number; used internally by the multiplication algorithm.
+/* A large FF number; used internally by the multiplication algorithm. */
 typedef struct {
 	uint32_t z[16];
 } FF_NUM_BIG;

@@ -3,10 +3,12 @@
 // TODO: Disable interrupts, go into low power mode. Maybe even poweroff?
 void error_state (void)
 {
-	while (1);
+	while (1)
+	{
+	}
 }
 
-uint32_t log2 (uint32_t a)
+uint32_t blog2 (uint32_t a)
 {
 	const uint32_t b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
 	const uint32_t S[] = {1, 2, 4, 8, 16};

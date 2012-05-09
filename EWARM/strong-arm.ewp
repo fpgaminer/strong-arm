@@ -91,7 +91,7 @@
         </option>
         <option>
           <name>GeneralEnableMisra</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GeneralMisraVerbose</name>
@@ -129,7 +129,7 @@
         <option>
           <name>GeneralMisraRules04</name>
           <version>0</version>
-          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+          <state>011101010010111110111000110111111111111111111011110110010110101111010101111111110100011111111111101111110011111001111011111010111111111111111</state>
         </option>
         <option>
           <name>RTConfigPath2</name>
@@ -241,11 +241,11 @@
         </option>
         <option>
           <name>IExtraOptionsCheck</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IExtraOptions</name>
-          <state></state>
+          <state>--diag_suppress=Pa050</state>
         </option>
         <option>
           <name>CCLangConformance</name>

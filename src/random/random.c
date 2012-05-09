@@ -8,6 +8,9 @@
 #define RNG_FLAG_SECS               ((uint8_t)0x0004) /*!< Seed error current status */
 
 
+static uint32_t read_random_number (void);
+
+
 static __IO uint32_t prev_rng;
 
 

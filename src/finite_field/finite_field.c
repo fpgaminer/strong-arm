@@ -11,8 +11,11 @@
 	#define MAX(x,y) ((x) > (y) ? (x) : (y))
 #endif
 
-// out = a (mod p)
 static void _ff_mod (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const p);
+static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b);
+static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b);
+static void ff_lshift1 (FF_NUM *const out, FF_NUM const *const a);
+static void ff_lshift (FF_NUM *const out, FF_NUM const *const a, uint32_t b);
 
 
 ////
@@ -75,7 +78,7 @@ void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF
 
 	for (int k = 0; k < 15; ++k)
 	{
-		for (int i = MAX(0, k - 7); i < 8 && i <= k; ++i)
+		for (int i = MAX(0, k - 7); (i < 8) && (i <= k); ++i)
 		{
 			int j = k - i;
 			asm("UMULL %0,%1,%2,%3" : "=r" (v), "=r" (u) : "r" (a->z[i]), "r" (b->z[j]));
@@ -123,7 +126,7 @@ void ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF
 		mb = &tb;
 	}
 	
-	if (_ff_add (out, ma, mb) || (ff_compare (out, p) >= 0))
+	if ((_ff_add (out, ma, mb)) || (ff_compare (out, p) >= 0))
 		_ff_sub (out, out, p);
 }
 
@@ -152,7 +155,7 @@ uint32_t ff_num_bits (FF_NUM const *const a)
 	for (int i = 7; i >= 0; --i)
 	{
 		if (a->z[i])
-			return log2(a->z[i]) + 32 * i + 1;
+			return blog2(a->z[i]) + 32 * i + 1;
 	}
 
 	return 0;
@@ -337,7 +340,7 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n)
 		for (int i = 0; i < 8; ++i)
 			out->z[i] = random_uint32 ();
 		
-		if (ff_compare (out, n) < 0 && !ff_is_zero (out))
+		if ((ff_compare (out, n) < 0) && (!ff_is_zero (out)))
 			return;
 	}
 }

@@ -241,11 +241,11 @@
         </option>
         <option>
           <name>IExtraOptionsCheck</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IExtraOptions</name>
-          <state></state>
+          <state>--diag_suppress=Pa050</state>
         </option>
         <option>
           <name>CCLangConformance</name>
@@ -296,6 +296,7 @@
           <state>$PROJ_DIR$\..\libraries\CMSIS\ST\STM32F4xx\Include</state>
           <state>$PROJ_DIR$\..\libraries\CMSIS\Include</state>
           <state>$PROJ_DIR$\..\inc</state>
+          <state>$PROJ_DIR$\..\tests</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1817,7 +1818,13 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\..\tests\finite_field.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\tests\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\tests\minunit.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\libraries\CMSIS\ST\STM32F4xx\Source\Templates\iar\startup_stm32f4xx.s</name>
