@@ -56,7 +56,8 @@ void ff_rshift1 (FF_NUM *const out, FF_NUM const *const a);
 /* Return log2(a) */
 uint32_t ff_num_bits (FF_NUM const *const a);
 
-/* Return a random number in the range [1, n - 1] */
+/* Return a random number in the range [1, n - 1]
+ * NOTE: If n is 0, the range will be [0, 2^256-1] */
 void ff_rand (FF_NUM *const out, FF_NUM const *const n);
 
 /* Copy a into the 8-bit array out, MSB first.

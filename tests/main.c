@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <minunit.h>
+#include <random.h>
 
 int tests_run = 0;
 
 char *test_finite_field (void);
+char *test_ecdsa (void);
 
 
 static char *all_tests ()
@@ -11,6 +13,7 @@ static char *all_tests ()
 	char *msg;
 
 	if (msg = test_finite_field ()) return msg;
+	if (msg = test_ecdsa ()) return msg;
 	
 	return 0;
 }
@@ -18,6 +21,8 @@ static char *all_tests ()
 
 int main (void)
 {
+	random_init ();
+	
 	char *result = all_tests ();
 	
 	if (result != 0)

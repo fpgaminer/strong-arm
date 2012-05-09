@@ -1818,6 +1818,12 @@
     </settings>
   </configuration>
   <group>
+    <name>ECDSA</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\ecdsa\ecdsa.c</name>
+    </file>
+  </group>
+  <group>
     <name>finite_field</name>
     <file>
       <name>$PROJ_DIR$\..\src\finite_field\ff_big.c</name>
@@ -1844,6 +1850,9 @@
       <name>$PROJ_DIR$\..\src\random\random.c</name>
     </file>
   </group>
+  <file>
+    <name>$PROJ_DIR$\..\inc\ecdsa.h</name>
+  </file>
   <file>
     <name>$PROJ_DIR$\..\inc\finite_field.h</name>
   </file>

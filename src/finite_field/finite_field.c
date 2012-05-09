@@ -340,6 +340,9 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n)
 		for (int i = 0; i < 8; ++i)
 			out->z[i] = random_uint32 ();
 		
+		if (ff_is_zero (n))
+			return;
+		
 		if ((ff_compare (out, n) < 0) && (!ff_is_zero (out)))
 			return;
 	}
