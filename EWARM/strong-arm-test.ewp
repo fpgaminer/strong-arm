@@ -1830,6 +1830,9 @@
     <name>$PROJ_DIR$\..\tests\minunit.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\tests\ripemd160.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\libraries\CMSIS\ST\STM32F4xx\Source\Templates\iar\startup_stm32f4xx.s</name>
   </file>
   <file>

@@ -6,6 +6,7 @@ int tests_run = 0;
 
 char *test_finite_field (void);
 char *test_ecdsa (void);
+char *test_ripemd160 (void);
 
 
 static char *all_tests ()
@@ -14,6 +15,7 @@ static char *all_tests ()
 
 	if (msg = test_finite_field ()) return msg;
 	if (msg = test_ecdsa ()) return msg;
+	if (msg = test_ripemd160 ()) return msg;
 	
 	return 0;
 }

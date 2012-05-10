@@ -1,0 +1,31 @@
+#include <string.h>
+#include <minunit.h>
+#include <ripemd160.h>
+
+/* Test known hashes */
+START_TEST (test_vectors)
+{
+	uint8_t hash[20];
+	const uint8_t str1[] = "The quick brown fox jumps over the lazy dog";
+	const uint8_t hash1[] = {0x37,0xf3,0x32,0xf6,0x8d,0xb7,0x7b,0xd9,0xd7,0xed,0xd4,0x96,0x95,0x71,0xad,0x67,0x1c,0xf9,0xdd,0x3b};
+	const uint8_t str2[] = "The quick brown fox jumps over the lazy cog";
+	const uint8_t hash2[] = {0x13,0x20,0x72,0xdf,0x69,0x09,0x33,0x83,0x5e,0xb8,0xb6,0xad,0x0b,0x77,0xe7,0xb6,0xf1,0x4a,0xca,0xd7};
+	const uint8_t hash3[] = {0x9c,0x11,0x85,0xa5,0xc5,0xe9,0xfc,0x54,0x61,0x28,0x08,0x97,0x7e,0xe8,0xf5,0x48,0xb2,0x25,0x8d,0x31};
+	
+	RIPEMD160 (hash, str1, sizeof(str1) - 1);
+	mu_assert (memcmp (hash, hash1, 20) == 0, "RIPEMD160 should correctly hash the test strings.");
+	
+	RIPEMD160 (hash, str2, sizeof(str2) - 1);
+	mu_assert (memcmp (hash, hash2, 20) == 0, "RIPEMD160 should correctly hash the test strings.");
+	
+	RIPEMD160 (hash, 0, 0);
+	mu_assert (memcmp (hash, hash3, 20) == 0, "RIPEMD160 should correctly hash the zero-length string.");
+}
+END_TEST
+
+char *test_ripemd160 (void)
+{
+	mu_run_test (test_vectors);
+	
+	return 0;
+}

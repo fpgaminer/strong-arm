@@ -129,7 +129,7 @@
         <option>
           <name>GeneralMisraRules04</name>
           <version>0</version>
-          <state>011101010010111110111000110111111111111111111011110110010110101111010101111111110100011111111111101111110011111001111011111010111111111111111</state>
+          <state>011101010010111110111000110111111111111111111011110110010110101111010101111111010100011111111111101111110011111001111011111010111111111111111</state>
         </option>
         <option>
           <name>RTConfigPath2</name>
@@ -1850,6 +1850,12 @@
       <name>$PROJ_DIR$\..\src\random\random.c</name>
     </file>
   </group>
+  <group>
+    <name>RIPEMD160</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\ripemd160\ripemd160.c</name>
+    </file>
+  </group>
   <file>
     <name>$PROJ_DIR$\..\inc\ecdsa.h</name>
   </file>
@@ -1858,6 +1864,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\..\inc\random.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\inc\ripemd160.h</name>
   </file>
 </project>
 

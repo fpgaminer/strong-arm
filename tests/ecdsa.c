@@ -85,12 +85,12 @@ END_TEST
 START_TEST (test_sign)
 {
 	const EC_POINT pubkey = {
-		{{}},
-		{{}}
+		{{0}},
+		{{0}}
 	};
-	const FF_NUM r = {};
-	const FF_NUM s = {};
-	const FF_NUM hash = {};
+	const FF_NUM r = {0};
+	const FF_NUM s = {0};
+	const FF_NUM hash = {0};
 	const FF_NUM bad_hash = {0};
 	const EC_POINT badpubkey = {{{0}},{{0}}};
 	const EC_POINT badpubkey2 = {{{1}},{{2}}};
