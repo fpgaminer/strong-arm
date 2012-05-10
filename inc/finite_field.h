@@ -53,6 +53,9 @@ void ff_inv (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const p);
 /* out = a >> 1 */
 void ff_rshift1 (FF_NUM *const out, FF_NUM const *const a);
 
+/* (q, rem) = a / 58 */
+void ff_div58 (FF_NUM *const out_q, FF_NUM *const out_rem, FF_NUM const *const a);
+
 /* Return log2(a) */
 uint32_t ff_num_bits (FF_NUM const *const a);
 

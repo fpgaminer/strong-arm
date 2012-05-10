@@ -1818,6 +1818,12 @@
     </settings>
   </configuration>
   <group>
+    <name>base58</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\base58\base58.c</name>
+    </file>
+  </group>
+  <group>
     <name>ECDSA</name>
     <file>
       <name>$PROJ_DIR$\..\src\ecdsa\ecdsa.c</name>
@@ -1862,6 +1868,9 @@
       <name>$PROJ_DIR$\..\src\sha256\sha256.c</name>
     </file>
   </group>
+  <file>
+    <name>$PROJ_DIR$\..\inc\base58.h</name>
+  </file>
   <file>
     <name>$PROJ_DIR$\..\inc\ecdsa.h</name>
   </file>

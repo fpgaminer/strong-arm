@@ -225,6 +225,42 @@ void ff_rshift1 (FF_NUM *const out, FF_NUM const *const a)
 	}
 }*/
 
+
+/* Divide (a) by 58 */
+void ff_div58 (FF_NUM *const out_q, FF_NUM *const out_rem, FF_NUM const *const a)
+{
+	FF_NUM D;
+	const FF_NUM fiftyeight = {{58,0,0,0,0,0,0,0}};
+
+	if (ff_compare (a, &fiftyeight) < 0)
+	{
+		ff_copy (out_rem, a);
+		ff_zero (out_q);
+		return;
+	}
+
+	const uint32_t na = ff_num_bits (a);
+
+	ff_copy (out_rem, a);
+	ff_zero (out_q);
+
+	// Align divisor to dividend
+	// Because of compare above, na >= nb
+	ff_lshift (&D, &fiftyeight, na - 6);
+
+	for (int i = na - 6; i >= 0; --i)
+	{
+		ff_lshift1 (out_q, out_q);
+		if (ff_compare (out_rem, &D) >= 0)
+		{
+			_ff_sub (out_rem, out_rem, &D);
+			out_q->z[0] |= 1;
+		}
+		ff_rshift1 (&D, &D);
+	}
+}
+
+
 bool ff_is_zero (FF_NUM const *const a)
 {
 	for (int i = 0; i < 8; ++i)
