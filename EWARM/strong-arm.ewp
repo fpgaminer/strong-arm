@@ -1848,6 +1848,12 @@
     </file>
   </group>
   <group>
+    <name>PBKDF2</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\pbkdf2\pbkdf2.c</name>
+    </file>
+  </group>
+  <group>
     <name>private</name>
     <file>
       <name>$PROJ_DIR$\..\src\private\util.c</name>
@@ -1885,6 +1891,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\..\inc\hmac.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\inc\pbkdf2.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\inc\random.h</name>

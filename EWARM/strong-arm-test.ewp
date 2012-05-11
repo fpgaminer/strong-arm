@@ -1836,6 +1836,9 @@
     <name>$PROJ_DIR$\..\tests\minunit.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\tests\pbkdf2.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\tests\random.c</name>
   </file>
   <file>

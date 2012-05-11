@@ -8,6 +8,7 @@
 // power-cycled.
 // ref: FIPS 140-2, 4.9 Self-Tests
 
+/* TODO: Need to keep this private. Only strongarm_init is allowed to call this. */
 // Initialize the random number module.
 // Call once at the beginning of operation.
 void random_init (void);
