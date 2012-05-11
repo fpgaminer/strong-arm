@@ -1,3 +1,4 @@
+#include <string.h>
 #include <base58.h>
 #include <sha256.h>
 #include <finite_field.h>
@@ -42,3 +43,17 @@ void base58_encode (uint8_t *const dst, uint8_t const *const src)
 	/* NULL Termination */
 	dst[dst_len] = 0;
 }
+
+void base58check_encode (uint8_t *const dst, uint8_t version, uint8_t const *const src)
+{
+	uint8_t hash[32];
+
+	memmove (dst + 1, src, 20);
+	dst[0] = version;
+	SHA256 (hash, dst, 21);
+	SHA256 (hash, hash, 32);
+
+	memcpy (dst + 21, hash, 4);
+	base58_encode (dst, dst);
+}
+
