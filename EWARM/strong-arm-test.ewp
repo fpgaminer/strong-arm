@@ -1827,6 +1827,9 @@
     <name>$PROJ_DIR$\..\tests\finite_field.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\tests\hmac.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\tests\main.c</name>
   </file>
   <file>

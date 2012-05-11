@@ -129,7 +129,7 @@
         <option>
           <name>GeneralMisraRules04</name>
           <version>0</version>
-          <state>011101010010111110111000110111111111111111111011110110010110101111010101111111010100011111111111101111110011111001111011111010111111111111111</state>
+          <state>011101010010111110111000110111111111111111111011110110010110101111010101111111010100011111101111101111110011111001111011111010111111111111111</state>
         </option>
         <option>
           <name>RTConfigPath2</name>
@@ -1842,6 +1842,12 @@
     </file>
   </group>
   <group>
+    <name>HMAC</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\hmac\hmac.c</name>
+    </file>
+  </group>
+  <group>
     <name>private</name>
     <file>
       <name>$PROJ_DIR$\..\src\private\util.c</name>
@@ -1878,6 +1884,9 @@
     <name>$PROJ_DIR$\..\inc\finite_field.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\inc\hmac.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\inc\random.h</name>
   </file>
   <file>
@@ -1885,6 +1894,12 @@
   </file>
   <file>
     <name>$PROJ_DIR$\..\inc\sha256.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\src\strong-arm.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\inc\strong-arm.h</name>
   </file>
 </project>
 
