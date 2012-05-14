@@ -1824,6 +1824,12 @@
     </file>
   </group>
   <group>
+    <name>DRBG</name>
+    <file>
+      <name>$PROJ_DIR$\..\src\drbg\HMAC_DRBG.c</name>
+    </file>
+  </group>
+  <group>
     <name>ECDSA</name>
     <file>
       <name>$PROJ_DIR$\..\src\ecdsa\ecdsa.c</name>
@@ -1882,6 +1888,9 @@
   </group>
   <file>
     <name>$PROJ_DIR$\..\inc\base58.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\inc\drbg.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\inc\ecdsa.h</name>
