@@ -28,7 +28,7 @@ START_TEST (test_bitcount)
 	
 	uint32_t expected = iterations << 4;
 	uint32_t error = (ones > expected) ? (ones - expected) : (expected - ones);
-	printf ("Random Test: Bitcount\nOnes: %u (expected %u)\n", ones, expected);
+	printf ("Random Test: Bitcount\nOnes: %lu (expected %lu)\n", ones, expected);
 	printf ("Error: %f%%\n\n", (error * 100.0f) / expected);
 }
 END_TEST
@@ -54,12 +54,12 @@ void test_wordcount (uint32_t bits)
 	
 	uint32_t expected = ((32 / bits) * iterations) >> bits;
 	
-	printf ("Random Test: Wordcount (k=%u)\n", bits);
+	printf ("Random Test: Wordcount (k=%lu)\n", bits);
 	uint32_t maxerror = 0;
 	for (uint32_t i = 0; i < (1 << bits); ++i)
 	{
 		uint32_t error = (buckets[i] > expected) ? (buckets[i] - expected) : (expected - buckets[i]);
-		printf ("[%2u] = %u (expected %u)\n", i, buckets[i], expected);
+		printf ("[%2lu] = %lu (expected %lu)\n", i, buckets[i], expected);
 		
 		if (error > maxerror)
 			maxerror = error;

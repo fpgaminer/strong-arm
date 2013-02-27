@@ -5,7 +5,7 @@
 void print_ff (FF_NUM const *const a)
 {
 	for (int i = 7; i >= 0; --i)
-		printf ("%08X", a->z[i]);
+		printf ("%08lX", a->z[i]);
 }
 
 START_TEST (test_mul)

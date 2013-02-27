@@ -73,10 +73,8 @@ void my_printf (const char *format, ...)
 	char buffer[1024] = {0};
 
 	va_start (arg, format);
-	snprintf (buffer, 1023, format, arg);
+	vsnprintf (buffer, 1023, format, arg);
 	va_end (arg);
-
-	__asm__ ("BKPT");
 
 	dbg_write_str (buffer);
 }
@@ -88,17 +86,16 @@ static char *all_tests ()
 {
 	char *msg;
 
-	/*
+
 	if ((msg = test_finite_field ())) return msg;
-	//if (msg = test_ecdsa ()) return msg;	// TODO: Re-enable
+	if ((msg = test_ecdsa ())) return msg;
 	if ((msg = test_ripemd160 ())) return msg;
-	if (msg = test_sha256 ()) return msg;
-	if (msg = test_base58 ()) return msg;
-	//if (msg = test_random ()) return msg;	// TODO: Re-enable
-	if (msg = test_hmac ()) return msg;
-	if (msg = test_pbkdf2()) return msg;
-	//if (msg = test_aes ()) return msg;	// TODO
-	if (msg = test_drbg ()) return msg;*/
+	if ((msg = test_sha256 ())) return msg;
+	if ((msg = test_base58 ())) return msg;
+	if ((msg = test_random ())) return msg;
+	if ((msg = test_hmac ())) return msg;
+	if ((msg = test_pbkdf2())) return msg;
+	if ((msg = test_drbg ())) return msg;
 	if ((msg = test_aes ())) return msg;
 	
 	return 0;

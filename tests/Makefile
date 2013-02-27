@@ -3,7 +3,16 @@ PROJ_NAME=main
 SRCS = src/main.c \
        src/system_stm32f4xx.c \
        src/startup_stm32f4xx.s \
-       src/aes.c
+       src/aes.c \
+       src/base58.c \
+       src/drbg.c \
+       src/ecdsa.c \
+       src/finite_field.c \
+       src/hmac.c \
+       src/pbkdf2.c \
+       src/random.c \
+       src/ripemd160.c \
+       src/sha256.c
 
 
 CC=arm-none-eabi-gcc

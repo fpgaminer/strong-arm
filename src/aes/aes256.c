@@ -3,6 +3,7 @@
  * https://github.com/libtom/libtomcrypt
  *
  */
+#include <string.h>
 #include <aes.h>
 #include "aes256_tables.h"
 
@@ -128,4 +129,44 @@ void aes256_encrypt_block (uint8_t ciphertext[static 16], uint8_t const key[stat
 
 	s3 = final_mix (t3 >> 24, t0 >> 16, t1 >> 8, t2) ^ eK[59];
 	save_big_endian (ciphertext + 12, s3);
+}
+
+
+/* Increment a Big-Endian counter */
+static void increment_counter (uint8_t counter[static 16])
+{
+	for (int i = 15; i >= 0; --i)
+	{
+		if ((counter[i] += 1) != 0)
+			break;
+	}
+}
+
+
+void aes256_crypt_ctr (uint8_t *ciphertext, uint8_t const key[static 32], uint8_t const iv[static 16], uint8_t const *plaintext, uint32_t len)
+{
+	uint8_t saved_key[32] = {0};
+	uint8_t counter[16] = {0};
+	uint8_t cipherblock[16] = {0};
+
+	/* Initialize */
+	memmove (counter, iv, 16);
+	memmove (saved_key, key, 32);
+
+	while (len > 0)
+	{
+		aes256_encrypt_block (cipherblock, saved_key, counter);
+		increment_counter (counter);
+
+		for (int i = 0; i < 16; ++i)
+		{
+			*ciphertext = (*plaintext) ^ cipherblock[i];
+			++ciphertext;
+			++plaintext;
+			--len;
+
+			if (len == 0)
+				break;
+		}
+	}
 }
