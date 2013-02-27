@@ -21,8 +21,8 @@ static inline uint32_t s0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	asm("ror %0,%1,#7" : "=r" (tmp1) : "r" (a));
-	asm("ror %0,%1,#18" : "=r" (tmp2) : "r" (a));
+	__asm__("ror %0,%1,#7" : "=r" (tmp1) : "r" (a));
+	__asm__("ror %0,%1,#18" : "=r" (tmp2) : "r" (a));
 	return tmp1 ^ tmp2 ^ (a >> 3);
 }
 
@@ -30,8 +30,8 @@ static inline uint32_t s1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	asm("ror %0,%1,#17" : "=r" (tmp1) : "r" (a));
-	asm("ror %0,%1,#19" : "=r" (tmp2) : "r" (a));
+	__asm__("ror %0,%1,#17" : "=r" (tmp1) : "r" (a));
+	__asm__("ror %0,%1,#19" : "=r" (tmp2) : "r" (a));
 	return tmp1 ^ tmp2 ^ (a >> 10);
 }
 
@@ -39,9 +39,9 @@ static inline uint32_t e0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	asm("ror %0,%1,#2" : "=r" (tmp1) : "r" (a));
-	asm("ror %0,%1,#13" : "=r" (tmp2) : "r" (a));
-	asm("ror %0,%1,#22" : "=r" (a) : "r" (a));
+	__asm__("ror %0,%1,#2" : "=r" (tmp1) : "r" (a));
+	__asm__("ror %0,%1,#13" : "=r" (tmp2) : "r" (a));
+	__asm__("ror %0,%1,#22" : "=r" (a) : "r" (a));
 	return tmp1 ^ tmp2 ^ a;
 }
 
@@ -49,9 +49,9 @@ static inline uint32_t e1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	asm("ror %0,%1,#6" : "=r" (tmp1) : "r" (a));
-	asm("ror %0,%1,#11" : "=r" (tmp2) : "r" (a));
-	asm("ror %0,%1,#25" : "=r" (a) : "r" (a));
+	__asm__("ror %0,%1,#6" : "=r" (tmp1) : "r" (a));
+	__asm__("ror %0,%1,#11" : "=r" (tmp2) : "r" (a));
+	__asm__("ror %0,%1,#25" : "=r" (a) : "r" (a));
 	return tmp1 ^ tmp2 ^ a;
 }
 

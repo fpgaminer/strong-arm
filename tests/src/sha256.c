@@ -13,13 +13,13 @@ START_TEST (test_vectors)
 	const uint8_t hash3[] = {0xe3,0xb0,0xc4,0x42,0x98,0xfc,0x1c,0x14,0x9a,0xfb,0xf4,0xc8,0x99,0x6f,0xb9,0x24,0x27,0xae,0x41,0xe4,0x64,0x9b,0x93,0x4c,0xa4,0x95,0x99,0x1b,0x78,0x52,0xb8,0x55};
 	
 	SHA256 (hash, str1, sizeof(str1) - 1);
-	mu_assert (memcmp (hash, hash1, 20) == 0, "SHA256 should correctly hash the test strings.");
+	mu_assert (memcmp (hash, hash1, 32) == 0, "SHA256 should correctly hash the test strings.");
 	
 	SHA256 (hash, str2, sizeof(str2) - 1);
-	mu_assert (memcmp (hash, hash2, 20) == 0, "SHA256 should correctly hash the test strings.");
+	mu_assert (memcmp (hash, hash2, 32) == 0, "SHA256 should correctly hash the test strings.");
 	
 	SHA256 (hash, 0, 0);
-	mu_assert (memcmp (hash, hash3, 20) == 0, "SHA256 should correctly hash the zero-length string.");
+	mu_assert (memcmp (hash, hash3, 32) == 0, "SHA256 should correctly hash the zero-length string.");
 	
 	mu_assert (hash[32] == 0x55, "SHA256 should not write more than 32 bytes to the destination array.");
 }

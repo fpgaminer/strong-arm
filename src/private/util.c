@@ -25,4 +25,3 @@ uint32_t blog2 (uint32_t a)
 
 	return r;
 }
-

@@ -7,7 +7,7 @@
 void base58_encode (uint8_t *const dst, uint8_t const *const src)
 {
 	const uint8_t code_string[] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-	FF_NUM x = {0}, rem;
+	FF_NUM x = {{0}}, rem;
 	uint8_t result[36];
 	uint32_t result_len = 0, dst_len = 0;
 	

@@ -12,4 +12,3 @@ void error_state (void);
 uint32_t blog2 (uint32_t a);
 
 #endif
-
