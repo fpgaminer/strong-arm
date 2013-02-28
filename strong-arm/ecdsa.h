@@ -11,7 +11,7 @@
 #define __ECDSA_H__
 
 #include <stdint.h>
-#include <finite_field.h>
+#include <strong-arm/finite_field.h>
 
 
 /* Point on the secp256k1 elliptic curve. */

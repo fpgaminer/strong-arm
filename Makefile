@@ -12,7 +12,8 @@ SRCS = src/strong-arm.c \
        src/random/random.c \
        src/ripemd160/ripemd160.c \
        src/sha256/sha256.c \
-       src/aes/aes256.c
+       src/aes/aes256.c \
+       src/utils.c
 
 
 CC=arm-none-eabi-gcc
@@ -28,7 +29,7 @@ CFLAGS += -mthumb -mcpu=cortex-m4
 CFLAGS += -mfloat-abi=soft
 # TODO: hard float was causing an exception; see what's up.
 
-CFLAGS += -Iinc -Isrc/private -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
+CFLAGS += -Istrong-arm -I. -Isrc/private -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
 
 OBJS := $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)

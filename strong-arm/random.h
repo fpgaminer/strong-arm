@@ -19,4 +19,8 @@ void random_init (void);
 // stale data.
 uint32_t random_uint32 (void);
 
+
+/* Fill (dst) with (len) random bytes. */
+void random_bytes (uint8_t *dst, uint32_t len);
+
 #endif

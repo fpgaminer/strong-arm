@@ -11,7 +11,7 @@
 static uint32_t read_random_number (void);
 
 
-static __IO uint32_t prev_rng;
+static volatile uint32_t prev_rng;
 
 
 static uint32_t read_random_number (void)
@@ -36,6 +36,7 @@ void random_init (void)
 	RCC->AHB2RSTR |= RCC_AHB2Periph_RNG;	// Enable Reset of RNG
 	RCC->AHB2RSTR &= ~RCC_AHB2Periph_RNG;	// Disable Reset of RNG
 	volatile uint32_t tmp = RNG->DR;		// Clear the RNG data register
+	(void)(tmp);
 	RNG->CR |= RNG_CR_RNGEN;		// Enable RNG
 	
 	// Discard first result
@@ -55,4 +56,20 @@ uint32_t random_uint32 (void)
 	prev_rng = tmp;
 	
 	return tmp;
+}
+
+
+/* TODO: It may be useful to feed into a DRBG, HMAC, or hash to hide the
+ * state of the TRNG. Though it probably isn't necessary, because this is a
+ * TRNG, it's a good defense in the worst case scenarios.
+ */
+void random_bytes (uint8_t *dst, uint32_t len)
+{
+	// Throw away first result
+	random_uint32 ();
+
+	while (len--)
+	{
+		*(dst++) = random_uint32 ();
+	}
 }
