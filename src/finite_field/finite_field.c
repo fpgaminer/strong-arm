@@ -397,3 +397,14 @@ uint32_t ff_serialize (uint8_t *out, FF_NUM const *const a)
 	
 	return 32;
 }
+
+
+void ff_deserialize (FF_NUM *const out, uint8_t const a[static 32])
+{
+	for (int i = 7; i >= 0; --i)
+	{
+		int j = (7 - i) * 4;
+
+		out->z[i] = (a[j] << 24) | (a[j+1] << 16) | (a[j+2] << 8) | a[j+3];
+	}	
+}

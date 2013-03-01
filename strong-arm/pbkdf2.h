@@ -16,7 +16,7 @@
  * Between 1,000 and 10,000 iterations is currently recommended (As of 2012).
  * 
  * WARNING: (salt) must not exceed 16 bytes!
- * WARNING: The memory for (dervied_key) should not overlap password!
+ * WARNING: The memory for (derived_key) should not overlap password!
  */
 void PBKDF2 (uint8_t *const derived_key, uint8_t const *const password, uint32_t passlen, uint8_t const *const salt, uint32_t saltlen, uint32_t iterations, uint32_t keylen);
 

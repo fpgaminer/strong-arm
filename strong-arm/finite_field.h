@@ -68,5 +68,10 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n);
  * Returns the number of bytes written (32). */
 uint32_t ff_serialize (uint8_t *out, FF_NUM const *const a);
 
-#endif
 
+/* Copy a into (out), Big Endian.
+ * (a) must be at least 32 bytes.
+ */
+void ff_deserialize (FF_NUM *const out, uint8_t const a[static 32]);
+
+#endif
