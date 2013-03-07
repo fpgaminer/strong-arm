@@ -13,7 +13,8 @@ SRCS = src/strong-arm.c \
        src/ripemd160/ripemd160.c \
        src/sha256/sha256.c \
        src/aes/aes256.c \
-       src/utils.c
+       src/utils.c \
+       src/asn1/der.c
 
 
 CC=arm-none-eabi-gcc

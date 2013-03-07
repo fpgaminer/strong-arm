@@ -68,10 +68,15 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n);
  * Returns the number of bytes written (32). */
 uint32_t ff_serialize (uint8_t *out, FF_NUM const *const a);
 
-
 /* Copy a into (out), Big Endian.
  * (a) must be at least 32 bytes.
  */
 void ff_deserialize (FF_NUM *const out, uint8_t const a[static 32]);
+
+/* Write the DER encoding of (a) to (out).
+ * Will not write more than (maxlen) bytes.
+ * Returns number of bytes written, or 0 if there wasn't enough space.
+ */
+uint32_t ff_der_serialize (uint8_t *const out, uint32_t maxlen, FF_NUM const *const a);
 
 #endif

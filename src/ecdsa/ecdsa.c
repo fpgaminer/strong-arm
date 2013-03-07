@@ -239,14 +239,18 @@ bool ec_verify (FF_NUM const *const z, EC_POINT const *const Q, FF_NUM const *co
 uint32_t ec_serialize (uint8_t *out, EC_POINT const *const P, bool compressed)
 {
 	if (!compressed) {
-		out[0] = 0x04;
-		ff_serialize (out+1, &(P->x));
-		ff_serialize (out+1+32, &(P->y));
+		if (out) {
+			out[0] = 0x04;
+			ff_serialize (out+1, &(P->x));
+			ff_serialize (out+1+32, &(P->y));
+		}
 		return 65;
 	}
 	else {
-		out[0] = (P->y.z[0] & 1) ? 0x03 : 0x02;	// odd/even?
-		ff_serialize (out+1, &(P->x));
+		if (out) {
+			out[0] = (P->y.z[0] & 1) ? 0x03 : 0x02;	// odd/even?
+			ff_serialize (out+1, &(P->x));
+		}
 		return 33;
 	}
 }

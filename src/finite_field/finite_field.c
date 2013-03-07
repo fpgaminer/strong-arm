@@ -408,3 +408,39 @@ void ff_deserialize (FF_NUM *const out, uint8_t const a[static 32])
 		out->z[i] = (a[j] << 24) | (a[j+1] << 16) | (a[j+2] << 8) | a[j+3];
 	}	
 }
+
+
+uint32_t ff_der_serialize (uint8_t *const out, uint32_t maxlen, FF_NUM const *const a)
+{
+	uint32_t len = 0;
+
+	if (maxlen < 35) return 0;
+	out[len++] = 0x02;    // type: INTEGER
+	out[len++] = 0;       // length: unknown, but no more than 33
+
+	// Big Endian
+	for (int i = 7; i >= 0; --i)
+	{
+		uint32_t word = a->z[i];
+
+		for (int j = 3; j >= 0; --j)
+		{
+			uint8_t byte = word >> (j * 8);
+
+			if (len == 2 && (byte == 0))
+				continue;                      // Skip leading 0s
+			
+			if (len == 2 && (byte & 0x80))    // First bit of number must be 0 (to indicate a positive integer)
+				out[len++] = 0x00;
+
+			out[len++] = byte;
+		}
+	}
+
+	if (len == 2)    // Number is 0
+		out[len++] = 0;
+
+	out[1] = len - 2;    // length minus the type and length bytes
+
+	return len;
+}
