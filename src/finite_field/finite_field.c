@@ -297,7 +297,7 @@ void ff_inv (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const p)
 				ff_rshift1 (&x, &x);
 				if (carry)
 					x.z[7] |= 0x80000000;
-				if (ff_compare (&x, p) >= 0)
+				if (ff_compare (&x, p) >= 0) /// TODO: This isn't needed, (x + p) / 2 will never exceed p because x is always in the field
 					_ff_sub (&x, &x, p);
 			}
 			else {
@@ -313,7 +313,7 @@ void ff_inv (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const p)
 				ff_rshift1 (&y, &y);
 				if (carry)
 					y.z[7] |= 0x80000000;
-				if (ff_compare (&y, p) >= 0)
+				if (ff_compare (&y, p) >= 0) /// TODO: This isn't needed, (y + p) / 2 will never exceed p because y is always in the field
 					_ff_sub (&y, &y, p);
 			}
 			else {
