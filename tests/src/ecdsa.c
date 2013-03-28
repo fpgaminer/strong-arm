@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <minunit.h>
-#include <ecdsa.h>
+#include <strong-arm/ecdsa.h>
 
 void print_ff (FF_NUM const *const a)
 {

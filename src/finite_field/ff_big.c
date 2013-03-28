@@ -48,6 +48,7 @@ static void ff_big_to_small (FF_NUM *const out, FF_NUM_BIG const *const a)
 
 static void _ff_big_sub (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, FF_NUM_BIG const *const b)
 {
+#ifdef __arm__
 	__asm__("subs %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[1]) : "r" (a->z[1]), "r" (b->z[1]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[2]) : "r" (a->z[2]), "r" (b->z[2]));
@@ -64,6 +65,27 @@ static void _ff_big_sub (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, FF_NU
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[13]) : "r" (a->z[13]), "r" (b->z[13]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[14]) : "r" (a->z[14]), "r" (b->z[14]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[15]) : "r" (a->z[15]), "r" (b->z[15]));
+#elif __i386__
+	*out = *a;
+	__asm__("subl %1, %0;" : "=m" (out->z[0]) : "r" (b->z[0]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[1]) : "r" (b->z[1]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[2]) : "r" (b->z[2]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[3]) : "r" (b->z[3]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[4]) : "r" (b->z[4]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[5]) : "r" (b->z[5]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[6]) : "r" (b->z[6]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[7]) : "r" (b->z[7]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[8]) : "r" (b->z[8]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[9]) : "r" (b->z[9]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[10]) : "r" (b->z[10]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[11]) : "r" (b->z[11]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[12]) : "r" (b->z[12]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[13]) : "r" (b->z[13]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[14]) : "r" (b->z[14]));
+	__asm__("sbbl %1, %0;" : "=m" (out->z[15]) : "r" (b->z[15]));
+#else
+	#error Must compile for ARM or X86
+#endif
 }
 
 void _ff_big_mod (FF_NUM *const out, FF_NUM_BIG const *const a, FF_NUM const *const p)

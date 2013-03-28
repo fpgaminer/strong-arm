@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <base58.h>
+#include <strong-arm/base58.h>
 
 
 /* Test known base58 encodings */

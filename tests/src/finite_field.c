@@ -1,5 +1,5 @@
 #include <minunit.h>
-#include <finite_field.h>
+#include <strong-arm/finite_field.h>
 
 START_TEST (test_compare)
 {

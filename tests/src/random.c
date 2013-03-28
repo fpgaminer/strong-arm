@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <minunit.h>
-#include <random.h>
+#include <strong-arm/random.h>
 
 
 /* Count the number of ones to check for bias */

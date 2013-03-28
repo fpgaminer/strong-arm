@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <pbkdf2.h>
+#include <strong-arm/pbkdf2.h>
 
 
 /* Test known data */

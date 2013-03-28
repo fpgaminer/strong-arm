@@ -35,6 +35,7 @@ void ff_zero (FF_NUM *const out)
 // Returns true on carry.
 static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b)
 {
+#ifdef __arm__
 	uint32_t zero = 0;
 
 	__asm__("adds %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
@@ -48,12 +49,31 @@ static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 	__asm__("adc %0,%1,%2" : "=r" (zero) : "r" (zero), "r" (zero));
 
 	return zero != 0;
+#elif __i386__
+	uint8_t zero = 0;
+
+	*out = *a;
+	__asm__("addl %1, %0;" : "=m" (out->z[0]) : "r" (b->z[0]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[1]) : "r" (b->z[1]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[2]) : "r" (b->z[2]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[3]) : "r" (b->z[3]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[4]) : "r" (b->z[4]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[5]) : "r" (b->z[5]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[6]) : "r" (b->z[6]));
+	__asm__("adcl %1, %0;" : "=m" (out->z[7]) : "r" (b->z[7]));
+	__asm__("setc %0;" : "=r" (zero));
+
+	return zero != 0;
+#else
+	#error Must compile for ARM or X86
+#endif
 }
 
 // Internal subtraction; does not (mod p).
 // Returns true on carry.
 static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b)
 {
+#ifdef __arm__
 	uint32_t zero = 0;
 
 	__asm__("subs %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
@@ -67,13 +87,29 @@ static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 	__asm__("sbc %0,%1,%2" : "=r" (zero) : "r" (zero), "r" (zero));
 
 	return zero != 0;
+#elif __i386__
+	uint8_t zero = 0;
+
+	__asm__("movl %1, %0; subl %2, %0;" : "=m" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[1]) : "r" (a->z[1]), "r" (b->z[1]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[2]) : "r" (a->z[2]), "r" (b->z[2]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[3]) : "r" (a->z[3]), "r" (b->z[3]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[4]) : "r" (a->z[4]), "r" (b->z[4]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[5]) : "r" (a->z[5]), "r" (b->z[5]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[6]) : "r" (a->z[6]), "r" (b->z[6]));
+	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[7]) : "r" (a->z[7]), "r" (b->z[7]));
+	__asm__("setc %0;" : "=r" (zero));
+
+	return zero != 0;
+#else
+	#error Must compile for ARM or X86
+#endif
 }
 
 void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p)
 {
 	uint32_t r0 = 0, r1 = 0, r2 = 0;
 	uint32_t u, v;
-	uint32_t zero = 0;
 	FF_NUM_BIG c;
 
 	for (int k = 0; k < 15; ++k)
@@ -81,10 +117,22 @@ void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF
 		for (int i = MAX(0, k - 7); (i < 8) && (i <= k); ++i)
 		{
 			int j = k - i;
+#ifdef __arm__
+			uint32_t zero = 0;
 			__asm__("UMULL %0,%1,%2,%3" : "=r" (v), "=r" (u) : "r" (a->z[i]), "r" (b->z[j]));
 			__asm__("adds %0,%1,%2" : "=r" (r0) : "r" (r0), "r" (v));
 			__asm__("adcs %0,%1,%2" : "=r" (r1) : "r" (r1), "r" (u));
 			__asm__("adc %0,%1,%2" : "=r" (r2) : "r" (r2), "r" (zero));
+#elif __i386__
+			uint64_t tmp = a->z[i] * (uint64_t)(b->z[j]);
+			v = tmp;
+			u = tmp >> 32;
+			__asm__("addl %1, %0;" : "=m" (r0) : "r" (v));
+			__asm__("adcl %1, %0;" : "=m" (r1) : "r" (u));
+			__asm__("adcl $0, %0;" : "=m" (r2));
+#else
+			#error Must compile for ARM or X86
+#endif
 		}
 		c.z[k] = r0;
 		r0 = r1;

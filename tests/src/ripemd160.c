@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <ripemd160.h>
+#include <strong-arm/ripemd160.h>
 
 /* Test known hashes */
 START_TEST (test_vectors)

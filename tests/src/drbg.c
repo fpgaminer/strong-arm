@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <drbg.h>
+#include <strong-arm/drbg.h>
 
 
 /* Test known data */

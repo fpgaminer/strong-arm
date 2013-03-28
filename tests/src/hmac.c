@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <hmac.h>
+#include <strong-arm/hmac.h>
 
 
 /* Test known data */

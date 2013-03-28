@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <aes.h>
+#include <strong-arm/aes.h>
 
 
 uint8_t monte_keys_256[400][32];

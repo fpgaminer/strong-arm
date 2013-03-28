@@ -1,6 +1,6 @@
 #include <string.h>
 #include <minunit.h>
-#include <sha256.h>
+#include <strong-arm/sha256.h>
 
 /* Test known hashes */
 START_TEST (test_vectors)

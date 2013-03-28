@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "minunit.h"
-#include <strong-arm.h>
+#include <strong-arm/strong-arm.h>
 
 int tests_run = 0;
 
@@ -44,7 +44,11 @@ void dbg_write(unsigned long dcc_data)
 
 void dbg_write_str(const char *msg)
 {
+#ifdef __arm__
 	__asm__ ("BKPT");
+#else
+	printf ("%s", msg);
+#endif
 
 	/*long len;
 	unsigned long dcc_data;

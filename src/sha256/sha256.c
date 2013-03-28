@@ -16,13 +16,21 @@ static inline uint32_t e0 (uint32_t a);
 static inline uint32_t e1 (uint32_t a);
 static void compress (uint32_t *digest, uint32_t *chunk);
 
+#ifdef __arm__
+	#define ROR_C(d, s, n) __asm__("ror %0,%1,#" n : "=r" (d) : "r" (s));
+#elif __i386__
+	#define ROR_C(d, s, n) __asm__("movl %1,%0; rorl $"n",%0" : "=r" (d) : "r" (s));
+#else
+	#error Target architecture must be ARM or X86
+#endif
+
 
 static inline uint32_t s0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	__asm__("ror %0,%1,#7" : "=r" (tmp1) : "r" (a));
-	__asm__("ror %0,%1,#18" : "=r" (tmp2) : "r" (a));
+	ROR_C (tmp1, a, "7");
+	ROR_C (tmp2, a, "18");
 	return tmp1 ^ tmp2 ^ (a >> 3);
 }
 
@@ -30,8 +38,8 @@ static inline uint32_t s1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	__asm__("ror %0,%1,#17" : "=r" (tmp1) : "r" (a));
-	__asm__("ror %0,%1,#19" : "=r" (tmp2) : "r" (a));
+	ROR_C (tmp1, a, "17");
+	ROR_C (tmp2, a, "19");
 	return tmp1 ^ tmp2 ^ (a >> 10);
 }
 
@@ -39,9 +47,9 @@ static inline uint32_t e0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	__asm__("ror %0,%1,#2" : "=r" (tmp1) : "r" (a));
-	__asm__("ror %0,%1,#13" : "=r" (tmp2) : "r" (a));
-	__asm__("ror %0,%1,#22" : "=r" (a) : "r" (a));
+	ROR_C (tmp1, a, "2");
+	ROR_C (tmp2, a, "13");
+	ROR_C (a, a, "22");
 	return tmp1 ^ tmp2 ^ a;
 }
 
@@ -49,9 +57,9 @@ static inline uint32_t e1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	__asm__("ror %0,%1,#6" : "=r" (tmp1) : "r" (a));
-	__asm__("ror %0,%1,#11" : "=r" (tmp2) : "r" (a));
-	__asm__("ror %0,%1,#25" : "=r" (a) : "r" (a));
+	ROR_C (tmp1, a, "6");
+	ROR_C (tmp2, a, "11");
+	ROR_C (a, a, "25");
 	return tmp1 ^ tmp2 ^ a;
 }
 

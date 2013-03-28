@@ -11,7 +11,13 @@
 static inline __attribute__((always_inline)) uint32_t ror (uint32_t a, uint32_t const i)
 {
 	uint32_t tmp;
+#ifdef __arm__
 	__asm__ ("ror %[Rd],%[Rm],%[Is]" : [Rd] "=r" (tmp) : [Rm] "r" (a), [Is] "i" (i));
+#elif __i386__
+	__asm__ ("movl %[Rm],%[Rd]; rorl %[Is],%[Rd]" : [Rd] "=r" (tmp) : [Rm] "r" (a), [Is] "i" (i));
+#else
+	#error Target architecture must be ARM or X86
+#endif
 	return tmp;
 }
 

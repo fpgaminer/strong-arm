@@ -1,4 +1,5 @@
 PROJ_NAME=libstrong-arm
+OBJDIR = build
 
 SRCS = src/strong-arm.c \
        src/base58/base58.c \
@@ -9,7 +10,6 @@ SRCS = src/strong-arm.c \
        src/hmac/hmac.c \
        src/pbkdf2/pbkdf2.c \
        src/private/util.c \
-       src/random/random.c \
        src/ripemd160/ripemd160.c \
        src/sha256/sha256.c \
        src/aes/aes256.c \
@@ -17,20 +17,38 @@ SRCS = src/strong-arm.c \
        src/asn1/der.c
 
 
-CC=arm-none-eabi-gcc
-OBJCOPY=arm-none-eabi-objcopy
-AR=arm-none-eabi-ar
+CFLAGS = -g -Wall -std=c99
 
-OBJDIR = build
+ifdef CYGWIN_MINGW
+	CC=i686-pc-mingw32-gcc
+	OBJCOPY=i686-pc-mingw32-objcopy
+	AR=i686-pc-mingw32-ar
+else
+	# ARM Cortex M4 (STM32F4)
+	CC=arm-none-eabi-gcc
+	OBJCOPY=arm-none-eabi-objcopy
+	AR=arm-none-eabi-ar
 
-CFLAGS  = -g -Wall -std=c99
-CFLAGS += -mthumb -mcpu=cortex-m4
-#CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CFLAGS += -mfloat-abi=soft
-# TODO: hard float was causing an exception; see what's up.
+	CFLAGS += -mthumb -mcpu=cortex-m4
+	#CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
+	#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+	CFLAGS += -mfloat-abi=soft
+	# TODO: hard float was causing an exception; see what's up.
+	CFLAGS += -O3
 
-CFLAGS += -Istrong-arm -I. -Isrc/private -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
+	TARGET_STM32F4 = 1
+endif
+
+
+CFLAGS += -Istrong-arm -I. -Isrc/private
+
+ifdef TARGET_STM32F4
+	SRCS += src/random/random_stm32f4.c
+	CFLAGS += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
+else
+	SRCS += src/random/random_win32.c
+endif
+
 
 OBJS := $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)

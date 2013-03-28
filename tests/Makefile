@@ -1,8 +1,6 @@
 PROJ_NAME=main
 
 SRCS = src/main.c \
-       src/system_stm32f4xx.c \
-       src/startup_stm32f4xx.s \
        src/aes.c \
        src/base58.c \
        src/drbg.c \
@@ -21,16 +19,28 @@ OBJCOPY=arm-none-eabi-objcopy
 OBJDIR = build
 
 CFLAGS  = -g -Wall -Wno-missing-braces -std=c99
-CFLAGS += -mthumb -mcpu=cortex-m4
-#CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
-#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CFLAGS += -mfloat-abi=soft
-# TODO: hard float was causing an exception; see what's up.
-LDFLAGS = -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map -g -Tstm32f4_flash.ld
+CFLAGS += -I../ -Isrc
+LDFLAGS = -g -L../build -lstrong-arm
 
-CFLAGS += -I../libraries/STM32F4xx_StdPeriph_Driver/inc -I../libraries/CMSIS/ST/STM32F4xx/Include -I../libraries/CMSIS/Include
-CFLAGS += -I../inc -Isrc
-LDFLAGS += -L../build -lstrong-arm --specs=nano.specs --specs=rdimon.specs -lc -lc -lrdimon
+ifdef CYGWIN_MINGW
+	CC=i686-pc-mingw32-gcc
+	OBJCOPY=i686-pc-mingw32-objcopy
+	AR=i686-pc-mingw32-ar
+else
+	CFLAGS += -mthumb -mcpu=cortex-m4
+	#CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
+	#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
+	CFLAGS += -mfloat-abi=soft
+	# TODO: hard float was causing an exception; see what's up.
+	
+	SRCS += src/system_stm32f4xx.c \
+	        src/startup_stm32f4xx.s
+
+	CFLAGS += -I../libraries/STM32F4xx_StdPeriph_Driver/inc -I../libraries/CMSIS/ST/STM32F4xx/Include -I../libraries/CMSIS/Include
+	LDFLAGS += -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map -Tstm32f4_flash.ld
+	LDFLAGS += --specs=nano.specs --specs=rdimon.specs -lc -lc -lrdimon
+endif
+
 
 OBJS := $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)
