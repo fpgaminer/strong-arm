@@ -5,6 +5,7 @@
 #include <finite_field.h>
 #include <random.h>
 #include "ff_big.h"
+#include "low_level.h"
 #include "util.h"
 
 #ifndef MAX
@@ -31,11 +32,13 @@ void ff_zero (FF_NUM *const out)
 		out->z[i] = 0;
 }
 
+
 // Internal addition; does not (mod p).
 // Returns true on carry.
 static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b)
 {
-#ifdef __arm__
+	return _ap_add (out->z, a->z, b->z, 8);
+/*#ifdef __arm__
 	uint32_t zero = 0;
 
 	__asm__("adds %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
@@ -52,6 +55,7 @@ static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 #elif __i386__
 	uint8_t zero = 0;
 
+	// TODO: Does not work when out == b
 	*out = *a;
 	__asm__("addl %1, %0;" : "=m" (out->z[0]) : "r" (b->z[0]));
 	__asm__("adcl %1, %0;" : "=m" (out->z[1]) : "r" (b->z[1]));
@@ -66,14 +70,16 @@ static bool _ff_add (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 	return zero != 0;
 #else
 	#error Must compile for ARM or X86
-#endif
+#endif*/
 }
+
 
 // Internal subtraction; does not (mod p).
 // Returns true on carry.
 static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b)
 {
-#ifdef __arm__
+	return _ap_sub (out->z, a->z, b->z, 8);
+/*#ifdef __arm__
 	uint32_t zero = 0;
 
 	__asm__("subs %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
@@ -90,6 +96,7 @@ static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 #elif __i386__
 	uint8_t zero = 0;
 
+	// TODO:
 	__asm__("movl %1, %0; subl %2, %0;" : "=m" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
 	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[1]) : "r" (a->z[1]), "r" (b->z[1]));
 	__asm__("movl %1, %0; sbbl %2, %0;" : "=m" (out->z[2]) : "r" (a->z[2]), "r" (b->z[2]));
@@ -103,14 +110,14 @@ static bool _ff_sub (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 	return zero != 0;
 #else
 	#error Must compile for ARM or X86
-#endif
+#endif*/
 }
 
-void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p)
+
+/*static void _ff_mul (uint32_t out[static 16], FF_NUM const *const a, FF_NUM const *const b)
 {
 	uint32_t r0 = 0, r1 = 0, r2 = 0;
 	uint32_t u, v;
-	FF_NUM_BIG c;
 
 	for (int k = 0; k < 15; ++k)
 	{
@@ -134,14 +141,21 @@ void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF
 			#error Must compile for ARM or X86
 #endif
 		}
-		c.z[k] = r0;
+		out[k] = r0;
 		r0 = r1;
 		r1 = r2;
 		r2 = 0;
 	}
 
-	c.z[15] = r0;
+	out[15] = r0;
+}*/
 
+
+void ff_mul (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *const b, FF_NUM const *const p)
+{
+	FF_NUM_BIG c;
+
+	_ap_mul_256 (c.z, a->z, b->z);
 	_ff_big_mod (out, &c, p);
 }
 

@@ -81,4 +81,4 @@ program: $(OBJDIR)/$(PROJ_NAME).elf
 
 
 # Dependdencies
-$(OBJDIR)/$(PROJ_NAME).elf: $(OBJS) | $(OBJDIR)
+$(OBJDIR)/$(PROJ_NAME).elf: $(OBJS) ../build/libstrong-arm.a | $(OBJDIR)

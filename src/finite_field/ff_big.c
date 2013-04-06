@@ -1,5 +1,6 @@
 #include "ff_big.h"
 #include "util.h"
+#include "low_level.h"
 
 /* */
 static void ff_big_copy (FF_NUM_BIG *out, FF_NUM_BIG const *const a);
@@ -48,7 +49,8 @@ static void ff_big_to_small (FF_NUM *const out, FF_NUM_BIG const *const a)
 
 static void _ff_big_sub (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, FF_NUM_BIG const *const b)
 {
-#ifdef __arm__
+	_ap_sub (out->z, a->z, b->z, 16);
+/*#ifdef __arm__
 	__asm__("subs %0,%1,%2" : "=r" (out->z[0]) : "r" (a->z[0]), "r" (b->z[0]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[1]) : "r" (a->z[1]), "r" (b->z[1]));
 	__asm__("sbcs %0,%1,%2" : "=r" (out->z[2]) : "r" (a->z[2]), "r" (b->z[2]));
@@ -85,7 +87,7 @@ static void _ff_big_sub (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, FF_NU
 	__asm__("sbbl %1, %0;" : "=m" (out->z[15]) : "r" (b->z[15]));
 #else
 	#error Must compile for ARM or X86
-#endif
+#endif*/
 }
 
 void _ff_big_mod (FF_NUM *const out, FF_NUM_BIG const *const a, FF_NUM const *const p)

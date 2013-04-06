@@ -1,17 +1,23 @@
+#include <stdlib.h>
 #include <random.h>
+#include <time.h>
 #include "util.h"
 
 // TODO: Everything
+// TODO: This is just for testing at the moment and is not cryptographically strong. DO NOT USE!!
+// TODO: Probably replace with HMAC_DRBG and a good entropy source.
 
 void random_init (void)
 {
+	srand (time (NULL));
 }
 
 
 uint32_t random_uint32 (void)
 {
-	error_state ();
-	return 0;
+	return rand ();
+	//error_state ();
+	//return 0;
 }
 
 
@@ -21,5 +27,9 @@ uint32_t random_uint32 (void)
  */
 void random_bytes (uint8_t *dst, uint32_t len)
 {
-	error_state ();
+	while (len)
+	{
+		*dst = random_uint32 () & 0xFF;
+		--len;
+	}
 }

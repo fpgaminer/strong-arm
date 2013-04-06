@@ -81,23 +81,26 @@ START_TEST (test_random_addmul)
 END_TEST
 
 /* A real signature and public key pulled from the Bitcoin blockchain. */
-/* TODO: Need to grab one. A bit difficult, because I need to calculate the hash by hand ... */
 START_TEST (test_sign)
 {
+	/* TXN: 409ed7df265df4c64457b0f99af11b18a35b450fa585eddd12436fd2cd6e2170 */
 	const EC_POINT pubkey = {
-		{{0}},
-		{{0}}
+		{{0xad3268c7,0x66e9e496,0x9c52baa0,0x337fc245,0xf29d7977,0x2c633098,0x6a882ddb,0xed541a9a}},
+		{{0x3d4f2412,0x1304ce26,0xda1fc20f,0xf127283a,0xeeaabe87,0x05226d42,0x7437ccf7,0x4786717f}}
 	};
-	const FF_NUM r = {0};
-	const FF_NUM s = {0};
-	const FF_NUM hash = {0};
-	const FF_NUM bad_hash = {0};
+	const FF_NUM r = {{0xB6A4DF24,0x95E23954,0xD7ACE345,0x1C9AD8EC,0x182A6D4A,0x93D2E9DB,0xED96E0A8,0x5C9521E0}};
+	const FF_NUM s = {{0x2FA43157,0xAD57CD5C,0x8769FEB0,0x788A8A34,0x39DC5910,0x5C62F71D,0xEFFBAEAF,0xFFF839DE}};
+	const uint8_t hash_str[] = {0x3d,0x66,0xae,0x70,0x09,0x4f,0x28,0xe4,0xc4,0xa2,0xc3,0xf2,0x63,0x9b,0xb5,0xf6,0x4e,0x0f,0xfb,0x1e,0x76,0x6f,0x12,0x1f,0x08,0x7b,0xac,0x81,0x92,0x52,0xd8,0x62};
+	FF_NUM hash = {0};
+	const FF_NUM bad_hash = {{0xDEADBEEF,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000}};
 	const EC_POINT badpubkey = {{{0}},{{0}}};
 	const EC_POINT badpubkey2 = {{{1}},{{2}}};
 	const EC_POINT badpubkey3 = {
 		{{0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF}},
 		{{0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF}}
 	};
+
+	ff_deserialize (&hash, hash_str);
 	
 	mu_assert (ec_verify (&hash, &pubkey, &r, &s), "ec_verify should return true on a valid signature.");
 	mu_assert (!ec_verify (&bad_hash, &pubkey, &r, &s), "ec_verify should return false on an invalid signature.");
@@ -167,6 +170,7 @@ char *test_ecdsa (void)
 {
 	mu_run_test (test_mul);
 	mu_run_test (test_random_addmul);
+	mu_run_test (test_sign);
 	mu_run_test (test_sign_corner);
 	mu_run_test (test_random_sign);
 	
