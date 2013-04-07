@@ -34,7 +34,6 @@ else
 	#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 	CFLAGS += -mfloat-abi=soft
 	# TODO: hard float was causing an exception; see what's up.
-	CFLAGS += -O3
 
 	TARGET_STM32F4 = 1
 endif
@@ -44,7 +43,7 @@ CFLAGS += -Istrong-arm -I. -Isrc/private
 
 ifdef TARGET_STM32F4
 	SRCS += src/random/random_stm32f4.c
-	SRCS += src/finite_field/low_level_arm.s
+	SRCS += src/finite_field/low_level_arm.c
 	CFLAGS += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
 else
 	SRCS += src/finite_field/low_level_generic.c

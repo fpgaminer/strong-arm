@@ -17,31 +17,6 @@ char *test_drbg (void);
 char *test_aes (void);
 
 
-/* All of this dbg_write stuff is a hack to get some kind of printf working.
- * I couldn't get semihosting to work with openocd/gdb yet.
- * It still doesn't work yet, so we just throw a breakpoint and call it a day.
- */
-#define TARGET_REQ_DEBUGMSG_ASCII			0x01
-#define NVIC_DBG_DATA_R         (*((volatile unsigned short *)0xE000EDF8))
-#define BUSY    1
-
-
-void dbg_write(unsigned long dcc_data)
-{
-	int len = 4;
-
-	while (len--)
-	{
-		/* wait for data ready */
-		while (NVIC_DBG_DATA_R & BUSY);
-
-		/* write our data and set write flag - tell host there is data*/
-		NVIC_DBG_DATA_R = (unsigned short)(((dcc_data & 0xff) << 8) | BUSY);
-		dcc_data >>= 8;
-	}
-}
-
-
 void dbg_write_str(const char *msg)
 {
 #ifdef __arm__
@@ -49,25 +24,6 @@ void dbg_write_str(const char *msg)
 #else
 	printf ("%s", msg);
 #endif
-
-	/*long len;
-	unsigned long dcc_data;
-
-	for (len = 0; msg[len] && (len < 65536); len++);
-
-	dbg_write(TARGET_REQ_DEBUGMSG_ASCII | ((len & 0xffff) << 16));
-
-	while (len > 0)
-	{
-		dcc_data = msg[0]
-			| ((len > 1) ? msg[1] << 8 : 0x00)
-			| ((len > 2) ? msg[2] << 16 : 0x00)
-			| ((len > 3) ? msg[3] << 24 : 0x00);
-		dbg_write(dcc_data);
-
-		msg += 4;
-		len -= 4;
-	}*/
 }
 
 
@@ -84,8 +40,6 @@ void my_printf (const char *format, ...)
 }
 
 
-
-
 static char *all_tests ()
 {
 	char *msg;
@@ -96,7 +50,7 @@ static char *all_tests ()
 	if ((msg = test_ripemd160 ())) return msg;
 	if ((msg = test_sha256 ())) return msg;
 	if ((msg = test_base58 ())) return msg;
-	if ((msg = test_random ())) return msg;
+	//if ((msg = test_random ())) return msg;
 	if ((msg = test_hmac ())) return msg;
 	if ((msg = test_pbkdf2())) return msg;
 	if ((msg = test_drbg ())) return msg;
