@@ -1,6 +1,6 @@
 #include <string.h>
-#include <pbkdf2.h>
-#include <hmac.h>
+#include <strong-arm/pbkdf2.h>
+#include <strong-arm/hmac.h>
 
 
 void PBKDF2 (uint8_t *const derived_key, uint8_t const *const password, uint32_t passlen, uint8_t const *const salt, uint32_t saltlen, uint32_t iterations, uint32_t keylen)

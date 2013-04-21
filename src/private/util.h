@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-/* Enter an error state that cannot be exitted and which freezes the device.
+/* Enter an error state that cannot be exited and which freezes the device.
  * This is used by the cryptographic functions when something goes horribly wrong.
  * This is recommended by FIPS 140. */
 void error_state (void);

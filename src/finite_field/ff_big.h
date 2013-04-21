@@ -2,7 +2,7 @@
 #define __PRIVATE_FF_BIG_H__
 
 #include <stdint.h>
-#include <finite_field.h>
+#include <strong-arm/finite_field.h>
 
 /* A large FF number; used internally by the multiplication algorithm. */
 typedef struct {

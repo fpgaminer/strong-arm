@@ -1,6 +1,6 @@
 #include <string.h>
-#include <hmac.h>
-#include <sha256.h>
+#include <strong-arm/hmac.h>
+#include <strong-arm/sha256.h>
 
 
 void HMAC (uint8_t *const hash, uint8_t const *const key, uint32_t klen, uint8_t const *const msg, uint32_t mlen)

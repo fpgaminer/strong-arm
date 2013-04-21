@@ -10,7 +10,8 @@ SRCS = src/main.c \
        src/pbkdf2.c \
        src/random.c \
        src/ripemd160.c \
-       src/sha256.c
+       src/sha256.c \
+       src/key_chain.c
 
 
 CC=arm-none-eabi-gcc
@@ -19,7 +20,7 @@ OBJCOPY=arm-none-eabi-objcopy
 OBJDIR = build
 
 CFLAGS  = -g -Wall -Wno-missing-braces -std=c99
-CFLAGS += -I../ -Isrc
+CFLAGS += -I../include -Isrc
 LDFLAGS = -g -L../build -lstrong-arm
 
 ifdef CYGWIN_MINGW

@@ -5,3 +5,7 @@ When the binary runs, it runs through all the unit tests, and returns results on
 
 Currently, STDOUT is handled with a breakpoint in an empty function which is passed the string(s) that would normally go to STDOUT. 
 This will be replaced with semihosting.
+
+
+To compile for x86 (Cygwin's MinGW):
+	* make CYGWIN_MINGW=1

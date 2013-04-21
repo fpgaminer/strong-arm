@@ -1,7 +1,7 @@
 #include <string.h>
-#include <drbg.h>
+#include <strong-arm/drbg.h>
 #include <util.h>
-#include <hmac.h>
+#include <strong-arm/hmac.h>
 
 
 /* Update (state) using 96-bytes of (provided_data). */

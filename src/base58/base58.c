@@ -1,7 +1,7 @@
 #include <string.h>
-#include <base58.h>
-#include <sha256.h>
-#include <finite_field.h>
+#include <strong-arm/base58.h>
+#include <strong-arm/sha256.h>
+#include <strong-arm/finite_field.h>
 
 
 void base58_encode (uint8_t *const dst, uint8_t const *const src)

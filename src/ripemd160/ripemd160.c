@@ -1,4 +1,4 @@
-#include <ripemd160.h>
+#include <strong-arm/ripemd160.h>
 #include <string.h>
 
 

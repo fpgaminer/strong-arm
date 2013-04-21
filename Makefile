@@ -14,10 +14,11 @@ SRCS = src/strong-arm.c \
        src/sha256/sha256.c \
        src/aes/aes256.c \
        src/utils.c \
-       src/asn1/der.c
+       src/asn1/der.c \
+       src/key_chain/key_chain.c
 
 
-CFLAGS = -g -Wall -std=c99
+CFLAGS = -g -Wall -Wno-missing-braces -std=c99
 
 ifdef CYGWIN_MINGW
 	CC=i686-pc-mingw32-gcc
@@ -39,7 +40,7 @@ else
 endif
 
 
-CFLAGS += -Istrong-arm -I. -Isrc/private
+CFLAGS += -Iinclude -I. -Isrc/private
 
 ifdef TARGET_STM32F4
 	SRCS += src/random/random_stm32f4.c

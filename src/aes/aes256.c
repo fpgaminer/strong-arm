@@ -4,7 +4,7 @@
  *
  */
 #include <string.h>
-#include <aes.h>
+#include <strong-arm/aes.h>
 #include "aes256_tables.h"
 
 

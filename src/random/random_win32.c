@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <random.h>
+#include <strong-arm/random.h>
 #include <time.h>
 #include "util.h"
 

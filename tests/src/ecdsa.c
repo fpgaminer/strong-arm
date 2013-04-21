@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <minunit.h>
 #include <strong-arm/ecdsa.h>
 

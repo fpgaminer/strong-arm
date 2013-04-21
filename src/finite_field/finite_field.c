@@ -2,8 +2,8 @@
 //
 // TODO: This code needs to be checked for correctness and optimized.
 
-#include <finite_field.h>
-#include <random.h>
+#include <strong-arm/finite_field.h>
+#include <strong-arm/random.h>
 #include "ff_big.h"
 #include "low_level.h"
 #include "util.h"
