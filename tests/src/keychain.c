@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <minunit.h>
-#include <strong-arm/key_chain.h>
+#include <strong-arm/keychain.h>
 
 
 /* Test known results.
@@ -14,12 +14,12 @@ START_TEST (test_known)
 	const EC_POINT pubkey0 = {{0x88B55835,0xD67CF499,0x680CA143,0xDF092255,0x3B72EE27,0xE7C6F1CE,0x5DB4396B,0x9FD04834},{0xA09B3F62,0x9EB89911,0x5EAD68DD,0x7F114C9E,0x31B9C3C8,0xDCBC6034,0x3A0A37DF,0x8A34AB11}};
 	EC_POINT pubkey;
 
-	key_chain_calculate (NULL, &pubkey, &base_private_key0, chain_key0, chain_index0);
+	keychain_calculate (NULL, &pubkey, &base_private_key0, chain_key0, chain_index0);
 	mu_assert (memcmp (&pubkey, &pubkey0, sizeof (EC_POINT)) == 0, "key_chain_calculate should calculate the correct derived key for known results.");
 }
 END_TEST
 
-char *test_key_chain (void)
+char *test_keychain (void)
 {
 	mu_run_test (test_known);
 	

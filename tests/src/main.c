@@ -15,7 +15,7 @@ char *test_hmac (void);
 char *test_pbkdf2 (void);
 char *test_drbg (void);
 char *test_aes (void);
-char *test_key_chain (void);
+char *test_keychain (void);
 
 
 void dbg_write_str(const char *msg)
@@ -47,8 +47,8 @@ static char *all_tests ()
 
 
 	if ((msg = test_finite_field ())) return msg;
-	//if ((msg = test_ecdsa ())) return msg;
-	if ((msg = test_key_chain ())) return msg;
+	if ((msg = test_ecdsa ())) return msg;
+	if ((msg = test_keychain ())) return msg;
 	if ((msg = test_ripemd160 ())) return msg;
 	if ((msg = test_sha256 ())) return msg;
 	if ((msg = test_base58 ())) return msg;

@@ -1,4 +1,4 @@
-#include <strong-arm/key_chain.h>
+#include <strong-arm/keychain.h>
 #include <strong-arm/aes.h>
 #include <strong-arm/random.h>
 #include <strong-arm/utils.h>
@@ -8,7 +8,7 @@
 const FF_NUM restricted_ec_n = {{0xD0364141, 0xBFD25E8C, 0xAF48A03B, 0xBAAEDCE6, 0xFFFFFFFD, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}};
 
 
-void key_chain_create (FF_NUM *const out_base_private_key, uint8_t out_chain_key[static 32])
+void keychain_create (FF_NUM *const out_base_private_key, uint8_t out_chain_key[static 32])
 {
 	/* Random private key */
 	ff_rand (out_base_private_key, &restricted_ec_n);
@@ -18,7 +18,7 @@ void key_chain_create (FF_NUM *const out_base_private_key, uint8_t out_chain_key
 }
 
 
-void key_chain_calculate (FF_NUM *const out_privkey, EC_POINT *const out_pubkey, FF_NUM const *const base_private_key, uint8_t const chain_key[static 32], uint8_t const index[static 16])
+void keychain_calculate (FF_NUM *const out_privkey, EC_POINT *const out_pubkey, FF_NUM const *const base_private_key, uint8_t const chain_key[static 32], uint8_t const index[static 16])
 {
 	uint8_t encrypted_index[32] = {0};
 	FF_NUM private_key_offset = {0};

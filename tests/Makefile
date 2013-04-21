@@ -11,7 +11,7 @@ SRCS = src/main.c \
        src/random.c \
        src/ripemd160.c \
        src/sha256.c \
-       src/key_chain.c
+       src/keychain.c
 
 
 CC=arm-none-eabi-gcc

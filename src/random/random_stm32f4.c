@@ -1,5 +1,5 @@
 #include <stm32f4xx.h>
-#include <random.h>
+#include <strong-arm/random.h>
 #include "util.h"
 
 #define RCC_AHB2Periph_RNG               ((uint32_t)0x00000040)
