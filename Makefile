@@ -18,7 +18,7 @@ SRCS = src/strong-arm.c \
        src/keychain/keychain.c
 
 
-CFLAGS = -g -Wall -Wno-missing-braces -std=c99
+CFLAGS = -g -Wall -Wextra -Wno-missing-braces -std=c99
 
 ifdef CYGWIN_MINGW
 	CC=i686-pc-mingw32-gcc
