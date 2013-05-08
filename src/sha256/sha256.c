@@ -149,61 +149,55 @@ void SHA256 (uint8_t *hash, uint8_t const * msg, uint32_t len)
 
 
 static const uint32_t initial_state[8] = {0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19};
-void SHA256_partial (uint8_t *hash, uint8_t const *src, uint32_t len, bool const first, bool const last)
+void SHA256_partial (uint8_t *hash, SHA256_STATE *const state, uint8_t const *src, uint32_t len, bool const first, bool const last)
 {
-	static uint32_t state[8];
-	static uint32_t chunk[16];
-	static uint32_t chunk_len = 0;
-	static uint32_t totallen = 0;
-	
 	// First data
 	if (first) {
-		chunk_len = 0;
-		totallen = 0;
-		memcpy (state, initial_state, 32);
-		memset (chunk, 0, 64);
+		state->chunk_len = 0;
+		state->totallen = 0;
+		memcpy (state->state, initial_state, 32);
+		memset (state->chunk, 0, 64);
 	}
 	
 	while (len > 0)
 	{
-		while ((chunk_len < 64) && (len > 0))
+		while ((state->chunk_len < 64) && (len > 0))
 		{
-			chunk[chunk_len>>2] |= ((uint32_t)*(src++)) << (8*(3-(chunk_len&3)));
-			++chunk_len;
+			state->chunk[state->chunk_len>>2] |= ((uint32_t)*(src++)) << (8*(3-(state->chunk_len&3)));
+			state->chunk_len += 1;
 			--len;
-			++totallen;
+			state->totallen += 1;
 		}
 		
-		if (chunk_len == 64)
+		if (state->chunk_len == 64)
 		{
-			compress (state, chunk);
-			chunk_len = 0;
-			memset (chunk, 0, 64);
+			compress (state->state, state->chunk);
+			state->chunk_len = 0;
+			memset (state->chunk, 0, 64);
 		}
 	}
 	
 	// Last data
 	if (last)
 	{
-		chunk[chunk_len>>2] |= (uint32_t)1 << (8*(3-(chunk_len&3)) + 7);
+		state->chunk[state->chunk_len>>2] |= (uint32_t)1 << (8*(3-(state->chunk_len&3)) + 7);
 		
-		if ((totallen & 63) > 55)
+		if ((state->totallen & 63) > 55)
 		{
-			compress (state, chunk);
-			memset (chunk, 0, 64);
+			compress (state->state, state->chunk);
+			memset (state->chunk, 0, 64);
 		}
 		
-		chunk[14] = (totallen >> 29);
-		chunk[15] = totallen << 3;
-		compress (state, chunk);
+		state->chunk[14] = (state->totallen >> 29);
+		state->chunk[15] = state->totallen << 3;
+		compress (state->state, state->chunk);
 		
 		for (int i = 0; i < 8; ++i)
 		{
-			*(hash++) = state[i] >> 24;
-			*(hash++) = state[i] >> 16;
-			*(hash++) = state[i] >> 8;
-			*(hash++) = state[i];
+			*(hash++) = state->state[i] >> 24;
+			*(hash++) = state->state[i] >> 16;
+			*(hash++) = state->state[i] >> 8;
+			*(hash++) = state->state[i];
 		}
 	}
 }
-
