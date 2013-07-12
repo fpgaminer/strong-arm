@@ -52,7 +52,7 @@ static char *all_tests ()
 	if ((msg = test_ripemd160 ())) return msg;
 	if ((msg = test_sha256 ())) return msg;
 	if ((msg = test_base58 ())) return msg;
-	//if ((msg = test_random ())) return msg;
+	if ((msg = test_random ())) return msg;
 	if ((msg = test_hmac ())) return msg;
 	if ((msg = test_pbkdf2())) return msg;
 	if ((msg = test_drbg ())) return msg;
