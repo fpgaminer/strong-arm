@@ -325,12 +325,8 @@ static void _ff_mod (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 }
 
 
-// TODO: Verify that this really is uniform.
 void ff_rand (FF_NUM *const out, FF_NUM const *const n)
 {
-	// Discard stale random number
-	random_uint32 ();
-	
 	while (1)
 	{
 		for (int i = 0; i < 8; ++i)
