@@ -345,14 +345,16 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n)
 }
 
 
-uint32_t ff_serialize (uint8_t *out, FF_NUM const *const a)
+uint32_t ff_serialize (uint8_t out[static 32], FF_NUM const *const a)
 {
+	uint8_t *ptr = out;
+
 	for (int i = 7; i >= 0; --i)
 	{
-		*(out++) = a->z[i] >> 24;
-		*(out++) = a->z[i] >> 16;
-		*(out++) = a->z[i] >> 8;
-		*(out++) = a->z[i];
+		*(ptr++) = a->z[i] >> 24;
+		*(ptr++) = a->z[i] >> 16;
+		*(ptr++) = a->z[i] >> 8;
+		*(ptr++) = a->z[i];
 	}
 	
 	return 32;

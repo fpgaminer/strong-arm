@@ -66,7 +66,7 @@ void ff_rand (FF_NUM *const out, FF_NUM const *const n);
 /* Copy a into the 8-bit array out, MSB first.
  * out must have at least 32 bytes available.
  * Returns the number of bytes written (32). */
-uint32_t ff_serialize (uint8_t *out, FF_NUM const *const a);
+uint32_t ff_serialize (uint8_t out[static 32], FF_NUM const *const a);
 
 /* Copy a into (out), Big Endian.
  * (a) must be at least 32 bytes.
