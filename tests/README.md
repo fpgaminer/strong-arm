@@ -7,5 +7,8 @@ Currently, STDOUT is handled with a breakpoint in an empty function which is pas
 This will be replaced with semihosting.
 
 
+To compile for STM32F4DISCOVERY:
+	* make
+
 To compile for x86 (Cygwin's MinGW):
 	* make CYGWIN_MINGW=1
