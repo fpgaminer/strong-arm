@@ -5,6 +5,7 @@
 #include "util.h"
 
 
+/* ec_n - 2**128 */
 const FF_NUM restricted_ec_n = {{0xD0364141, 0xBFD25E8C, 0xAF48A03B, 0xBAAEDCE6, 0xFFFFFFFD, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}};
 
 
