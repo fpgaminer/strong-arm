@@ -1,6 +1,6 @@
 // Implements Finite Field Arithmetic
 //
-// TODO: This code needs to be checked for correctness and optimized.
+// TODO: This code needs to be optimized.
 
 #include <strong-arm/finite_field.h>
 #include <strong-arm/random.h>
