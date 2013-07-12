@@ -132,7 +132,7 @@ static void ff_big_lshift (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, uin
 
 	ff_big_lshift1 (out, a);
 
-	for (int i = 1; i < b; ++i)
+	while ((--b) > 0)
 		ff_big_lshift1 (out, out);
 }
 
