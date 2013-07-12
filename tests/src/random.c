@@ -39,7 +39,7 @@ END_TEST
 
 void test_wordcount (uint32_t bits)
 {
-	const uint32_t iterations = 1000000;	// Do not set higher than ~134,000,000
+	const uint32_t iterations = 10000000;	// Do not set higher than ~134,000,000
 	const uint32_t mask = (1 << bits) - 1;
 	uint32_t buckets[32] = {0};
 	uint32_t tmp;
