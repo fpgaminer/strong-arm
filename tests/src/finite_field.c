@@ -1,6 +1,7 @@
 #include <minunit.h>
 #include <strong-arm/finite_field.h>
 
+
 START_TEST (test_compare)
 {
 	const FF_NUM a = {0xDEADBEEF, 0x01234567, 0x89ABCDEF, 0xFEDCBA98, 0x76543210, 0x77777777, 0x39103739, 0xFFFFFFFE};
@@ -12,6 +13,7 @@ START_TEST (test_compare)
 	mu_assert (ff_compare (&b, &c) < 0, "ff_compare should return <0 if the first argument is less than the second.");
 }
 END_TEST
+
 
 START_TEST (test_copy)
 {
@@ -82,6 +84,7 @@ START_TEST (test_sub)
 }
 END_TEST
 
+
 START_TEST (test_mul)
 {
 	FF_NUM d;
@@ -109,6 +112,7 @@ START_TEST (test_mul)
 	mu_assert (ff_compare (&d, &r4) == 0, "ff_mul should allow the destination argument to be the same as the source arguments.");
 }
 END_TEST
+
 
 START_TEST (test_inv)
 {
