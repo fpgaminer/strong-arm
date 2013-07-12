@@ -1,8 +1,18 @@
 #include "util.h"
 
-// TODO: Disable interrupts, go into low power mode. Maybe even poweroff?
+#ifdef TARGET_STM32F4
+	#include <stm32f4xx.h>
+#endif
+
+
+// TODO: Go into low power mode, blink LED? Maybe even poweroff?
 void error_state (void)
 {
+	// Disable interrupts
+#ifdef TARGET_STM32F4
+	__disable_irq ();
+#endif
+
 	while (1)
 	{
 	}
