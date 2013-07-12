@@ -9,7 +9,7 @@
  *
  * It is safe for ciphertext, key, and plaintext to point to the same data.
  *
- * Obviously, only use this with a standard block mode (CTR is the author's recommendation).
+ * Obviously, only use this with a standard block mode.
  */
 void aes256_encrypt_block (uint8_t ciphertext[static 16], uint8_t const key[static 32], uint8_t const plaintext[static 16]);
 
