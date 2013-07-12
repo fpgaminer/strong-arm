@@ -138,7 +138,7 @@ static void ff_lshift (FF_NUM *const out, FF_NUM const *const a, uint32_t b)
 
 	ff_lshift1 (out, a);
 
-	for (int i = 1; i < b; ++i)
+	while ((--b) > 0)
 		ff_lshift1 (out, out);
 }
 
