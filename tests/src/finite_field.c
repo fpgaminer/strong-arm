@@ -29,7 +29,7 @@ START_TEST (test_copy)
 }
 END_TEST
 
-// TODO: Exercise more corner cases (overflows, negative values on subtraction, etc).
+
 START_TEST (test_add)
 {
 	FF_NUM d, e;
@@ -57,7 +57,7 @@ START_TEST (test_add)
 }
 END_TEST
 
-// TODO: Exercise more corner cases (overflows, negative values on subtraction, etc).
+
 START_TEST (test_sub)
 {
 	FF_NUM d, e;
