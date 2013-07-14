@@ -18,7 +18,7 @@ static void compress (uint32_t *digest, uint32_t *chunk);
 
 #ifdef __arm__
 	#define ROR_C(d, s, n) __asm__("ror %0,%1,#" n : "=r" (d) : "r" (s));
-#elif __i386__
+#elif defined(__i386__)
 	#define ROR_C(d, s, n) __asm__("movl %1,%0; rorl $"n",%0" : "=r" (d) : "r" (s));
 #else
 	#error Target architecture must be ARM or X86
