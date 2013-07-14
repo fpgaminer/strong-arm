@@ -45,10 +45,8 @@ CFLAGS += -Iinclude -I. -Isrc/private
 
 ifdef TARGET_STM32F4
 	SRCS += src/random/random_stm32f4.c
-	SRCS += src/finite_field/low_level_arm.c
 	CFLAGS += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
 else
-	SRCS += src/finite_field/low_level_generic.c
 	SRCS += src/random/random_win32.c
 endif
 

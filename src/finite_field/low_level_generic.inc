@@ -6,7 +6,7 @@
 #endif
 
 
-uint32_t _ap_add (uint32_t *const c, uint32_t const *const a, uint32_t const *const b, uint32_t const n)
+static uint32_t _ap_add (uint32_t *const c, uint32_t const *const a, uint32_t const *const b, uint32_t const n)
 {
 	uint32_t carry = 0;
 
@@ -23,7 +23,7 @@ uint32_t _ap_add (uint32_t *const c, uint32_t const *const a, uint32_t const *co
 }
 
 
-uint32_t _ap_sub (uint32_t *const c, uint32_t const *const a, uint32_t const *const b, uint32_t const n)
+static uint32_t _ap_sub (uint32_t *const c, uint32_t const *const a, uint32_t const *const b, uint32_t const n)
 {
 	uint32_t carry = 0;
 
@@ -39,7 +39,7 @@ uint32_t _ap_sub (uint32_t *const c, uint32_t const *const a, uint32_t const *co
 }
 
 
-void _ap_mul_256 (uint32_t out[static 16], uint32_t const a[static 8], uint32_t const b[static 8])
+static void _ap_mul_256 (uint32_t out[static 16], uint32_t const a[static 8], uint32_t const b[static 8])
 {
 	uint64_t r0 = 0;
 	uint32_t r2 = 0;
