@@ -28,6 +28,9 @@ static void ff_big_rshift1 (FF_NUM_BIG *const out, FF_NUM_BIG const *const a);
 /* */
 static void _ff_big_sub (FF_NUM_BIG *const out, FF_NUM_BIG const *const a, FF_NUM_BIG const *const b);
 
+/* Optimized specifically for secp256k1's finite field. */
+static void _ff_big_mod_secp256k1 (FF_NUM *const out, FF_NUM_BIG const *const a);
+
 
 
 /* *** */
@@ -57,6 +60,14 @@ void _ff_big_mod (FF_NUM *const out, FF_NUM_BIG const *const a, FF_NUM const *co
 	FF_NUM_BIG D;
 	FF_NUM_BIG rem;
 	FF_NUM_BIG m = {{0}};
+	const FF_NUM ec_p = {{0xFFFFFC2F, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}};
+
+	// Optimize for secp256k1's prime
+	if (ff_compare (p, &ec_p) == 0)
+	{
+		_ff_big_mod_secp256k1 (out, a);
+		return;
+	}
 	
 	for (int i = 0; i < 8; ++i)
 	{
@@ -90,6 +101,112 @@ void _ff_big_mod (FF_NUM *const out, FF_NUM_BIG const *const a, FF_NUM const *co
 
 	ff_big_to_small (out, &rem);
 }
+
+
+static void _ap_shift_helper (uint32_t c[static 9], uint32_t a[static 9], uint32_t const s)
+{
+	if (s == 32)
+		c[0] = 0;
+	else
+		c[0] = a[0] << s;
+
+	for (int i = 1; i < 8; ++i)
+	{
+		c[i] = a[i-1] >> (32 - s);
+		if (s < 32)
+			c[i] |= a[i] << s;
+	}
+
+	c[8] = 0;
+}
+
+
+static void _ff_big_mod_secp256k1 (FF_NUM *const out, FF_NUM_BIG const *const a)
+{
+	const uint32_t p[9] = {0xFFFFFC2F, 0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000};
+	uint32_t c1[9] = {0};
+	uint32_t w[9] = {0};
+	uint32_t s[9] = {0};
+
+	// c1 = a >> 256
+	for (int i = 0; i < 8; ++i)
+	{
+		c1[i] = a->z[i + 8];
+	}
+
+	uint32_t k = (c1[7] >> 28) + (c1[7] >> 26);
+	k += (c1[7] >> 25);
+	k += (c1[7] >> 24);
+	k += (c1[7] >> 23);
+
+	uint64_t s1 = (uint64_t)k + c1[7];
+	uint64_t k11 = (s1 << 2) + (s1 << 1) + s1;
+	uint64_t k12 = k11 << 7;
+	uint64_t k13 = (s1 << 4) + s1;
+	uint64_t k14 = (s1 << 6) + k13;
+	uint64_t k12_k14 = k12 + k14;
+
+	// s = c0 + c1 + (s1 << 32) + k12_k14 + w1 + w2 + w3 + w4 + w5 + w6
+	for (int i = 0; i < 8; ++i)
+	{
+		s[i] = a->z[i];
+	}
+
+	_ap_add (s, s, c1, 9);
+
+	w[1] = s1;
+	w[2] = s1 >> 32;
+	_ap_add (s, s, w, 9);
+
+	w[0] = k12_k14;
+	w[1] = k12_k14 >> 32;
+	w[2] = 0;
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 32);
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 9);
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 8);
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 7);
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 6);
+	_ap_add (s, s, w, 9);
+
+	_ap_shift_helper (w, c1, 4);
+	_ap_add (s, s, w, 9);
+
+	// while (s >= p) s -= p
+	// At most, p will need to be subtracted 8 times.
+	while (true)
+	{
+		if (_ap_sub (w, s, p, 9))
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				out->z[i] = s[i];
+			}
+
+			break;
+		}
+
+		if (_ap_sub (s, w, p, 9))
+		{
+			for (int i = 0; i < 8; ++i)
+			{
+				out->z[i] = w[i];
+			}
+
+			break;
+		}
+	}
+}
+
 
 static int ff_big_compare (FF_NUM_BIG const *const a, FF_NUM_BIG const *const b)
 {
