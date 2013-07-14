@@ -4,5 +4,5 @@ monitor poll
 
 monitor flash probe 0
 monitor reset halt
-monitor flash write_image erase build/main.elf 0x00000000 elf
+load
 monitor reset init

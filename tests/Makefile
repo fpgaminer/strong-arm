@@ -16,6 +16,7 @@ SRCS = src/main.c \
 
 CC=arm-none-eabi-gcc
 OBJCOPY=arm-none-eabi-objcopy
+DB=arm-none-eabi-gdb
 
 OBJDIR = build
 
@@ -79,6 +80,9 @@ clean:
 
 program: $(OBJDIR)/$(PROJ_NAME).elf
 	openocd-0.6.1 -f program.cfg
+
+flash-and-debug: $(OBJDIR)/$(PROJ_NAME).elf
+	$(DB) --command=gdb/stm32f4.script $^
 
 
 # Dependdencies
