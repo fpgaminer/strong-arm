@@ -3,11 +3,13 @@
 #include <minunit.h>
 #include <strong-arm/ecdsa.h>
 
+
 void print_ff (FF_NUM const *const a)
 {
 	for (int i = 7; i >= 0; --i)
 		printf ("%08lX", a->z[i]);
 }
+
 
 START_TEST (test_mul)
 {
@@ -16,7 +18,9 @@ START_TEST (test_mul)
 	const FF_NUM Y1 = {0x0F2CA232,0x01BB419E,0x686CB5A9,0x7728A960,0x7A91E7DD,0x23F6D25A,0xD730FD89,0x0B71EA9B};
 	const FF_NUM m2 = {0x4DEECCEC,0x7E1E181E,0x4C42422A,0x44B8A052,0x4AD44C40,0xEFFF13EE,0xDCD12581,0x376A3A2C};
 	const FF_NUM X2 = {0x987DABA1,0x415EE4FE,0x3AA60A3E,0xFED471EF,0x81372CA6,0x92E5B36C,0xFCD4B0BD,0x14890E61};
-	const FF_NUM Y2 = {0x2263F982,0xE66ADC27,0xDBE23397,0xD1C2B7B0,0xEE0EB6DC,0x2D3BCA67,0x9F752AB4,0x297B858D};	
+	const FF_NUM Y2 = {0x2263F982,0xE66ADC27,0xDBE23397,0xD1C2B7B0,0xEE0EB6DC,0x2D3BCA67,0x9F752AB4,0x297B858D};
+	const FF_NUM m3 = {0x00000001,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
+	const FF_NUM m4 = {0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000};
 	
 	EC_POINT Q;
 
@@ -28,11 +32,20 @@ START_TEST (test_mul)
 	mu_assert (ff_compare (&(Q.x), &X2) == 0, "ec_mul should multiply G by a scalar value.");
 	mu_assert (ff_compare (&(Q.y), &Y2) == 0, "ec_mul should multiply G by a scalar value.");
 
+	ec_mul (&Q, &m3, &ec_G);
+	mu_assert (ff_compare (&(Q.x), &(ec_G.x)) == 0, "ec_mul should return G when multiplying G by 1.");
+	mu_assert (ff_compare (&(Q.y), &(ec_G.y)) == 0, "ec_mul should return G when multiplying G by 1.");
+
+	ec_mul (&Q, &m4, &ec_G);
+	mu_assert (ff_is_zero (&(Q.x)), "ec_mul should return Infinity when multiply G by n.");
+	mu_assert (ff_is_zero (&(Q.x)), "ec_mul should return Infinity when multiply G by n.");
+
 	ec_mul (&Q, &ec_n, &ec_G);
-	mu_assert (ff_is_zero (&(Q.x)), "ec_mul should return Infinity when multiplying G by n");
-	mu_assert (ff_is_zero (&(Q.y)), "ec_mul should return Infinity when multiplying G by n");
+	mu_assert (ff_is_zero (&(Q.x)), "ec_mul should return Infinity when multiplying G by n.");
+	mu_assert (ff_is_zero (&(Q.y)), "ec_mul should return Infinity when multiplying G by n.");
 }
 END_TEST
+
 
 /* Random unit test for ec_mul and ec_add */
 START_TEST (test_random_addmul)
@@ -81,8 +94,9 @@ START_TEST (test_random_addmul)
 }
 END_TEST
 
+
 /* A real signature and public key pulled from the Bitcoin blockchain. */
-START_TEST (test_sign)
+START_TEST (test_verify)
 {
 	/* TXN: 409ed7df265df4c64457b0f99af11b18a35b450fa585eddd12436fd2cd6e2170 */
 	const EC_POINT pubkey = {
@@ -111,6 +125,7 @@ START_TEST (test_sign)
 }
 END_TEST
 
+
 /* Test corner cases */
 START_TEST (test_sign_corner)
 {
@@ -132,6 +147,7 @@ START_TEST (test_sign_corner)
 	mu_assert (ec_verify (&hash2, &pubkey, &r, &s), "ec_sign should create a signature that can be verified with ec_verify when the hash is 2^256-1.");
 }
 END_TEST
+
 
 /* Create random key pairs, sign random messages, and verify the signatures. */
 START_TEST (test_random_sign)
@@ -167,11 +183,12 @@ START_TEST (test_random_sign)
 }
 END_TEST
 
+
 char *test_ecdsa (void)
 {
 	mu_run_test (test_mul);
 	mu_run_test (test_random_addmul);
-	mu_run_test (test_sign);
+	mu_run_test (test_verify);
 	mu_run_test (test_sign_corner);
 	mu_run_test (test_random_sign);
 	
