@@ -12,3 +12,13 @@ To compile for STM32F4DISCOVERY:
 
 To compile for x86 (Cygwin's MinGW):
 	* make CYGWIN_MINGW=1
+
+
+To run tests on an STM32F4DISCOVERY or similiar:
+	* make
+	* openocd -f board/stm32f4discovery.cfg
+	* make flash-and-debug
+	* continue
+	* GDB will hit a breakpoint when the program is trying to print a message.
+	* Either the program says ALL TESTS PASSED along with some debug messages from
+		the random module, or it will report an error.
