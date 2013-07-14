@@ -306,11 +306,11 @@ static void _ff_mod (FF_NUM *const out, FF_NUM const *const a, FF_NUM const *con
 	const uint32_t na = ff_num_bits (a);
 	const uint32_t nb = ff_num_bits (p);
 
-	ff_copy (out, a);
-
 	// Align divisor to dividend
 	// Because of compare above, na >= nb
 	ff_lshift (&D, p, na - nb);
+
+	ff_copy (out, a);
 
 	for (int i = na - nb; i >= 0; --i)
 	{
