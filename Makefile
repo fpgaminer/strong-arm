@@ -19,6 +19,7 @@ SRCS = src/strong-arm.c \
 
 
 CFLAGS = -g -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c99
+#CFLAGS += -O3 -funroll-loops
 
 ifdef CYGWIN_MINGW
 	CC=i686-pc-mingw32-gcc
