@@ -1,4 +1,5 @@
 target remote localhost:3333
+monitor arm semihosting enable
 monitor halt
 monitor poll
 
