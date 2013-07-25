@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include "minunit.h"
 #include <strong-arm/strong-arm.h>
@@ -18,39 +19,22 @@ char *test_aes (void);
 char *test_keychain (void);
 
 
-void dbg_write_str(const char *msg)
-{
+// Manually implemented semihosting, because I could not get GCC ARM Embedded's semihosting working.
+// The semihosting protocol is documented in ARM DUI 0203J.
+// This function calls SYS_WRITE (0x05).
 #ifdef __arm__
-	// Manual semi-hosting, because the GCC ARM Embedded's semihosting wasn't working.
-	for (; *msg; ++msg)
-	{
-		// Moves a pointer to msg into r1, sets r0 to 0x03,
-		// and then performs a special breakpoint that OpenOCD sees as
-		// the semihosting call. r0 tells OpenOCD which semihosting
-		// function we're calling. In this case WRITEC, which writes
-		// a single char pointed to by r1 to the console.
-		__asm__ ("mov r1,%0; mov r0,$3; BKPT 0xAB" :
-		                                           : "r" (msg)
-		                                           : "r0", "r1"
-		);
-	}
-#else
-	printf ("%s", msg);
-#endif
-}
-
-
-void my_printf (const char *format, ...)
+int _write (int fd, char *ptr, int len)
 {
-	va_list arg;
-	char buffer[1024] = {0};
+	uint32_t data[3] = {(uint32_t)fd, (uint32_t)ptr, (uint32_t)len};
 
-	va_start (arg, format);
-	vsnprintf (buffer, 1023, format, arg);
-	va_end (arg);
+	__asm__ ("mov r1,%0; mov r0,$5; bkpt 0xab" :
+	                                           : "r" (data)
+	                                           : "r0", "r1"
+	);
 
-	dbg_write_str (buffer);
+	return len;
 }
+#endif
 
 
 static char *all_tests ()
@@ -81,10 +65,10 @@ int main (void)
 	char *result = all_tests ();
 	
 	if (result != 0)
-		my_printf ("%s\n", result);
+		printf ("%s\n", result);
 	else
-		my_printf ("ALL TESTS PASSED\n");
-	my_printf ("Tests run: %d\n", tests_run);
+		printf ("ALL TESTS PASSED\n");
+	printf ("Tests run: %d\n", tests_run);
 	
 	return result != 0;
 }

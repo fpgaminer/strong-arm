@@ -40,7 +40,10 @@ else
 
 	CFLAGS += -I../libraries/STM32F4xx_StdPeriph_Driver/inc -I../libraries/CMSIS/ST/STM32F4xx/Include -I../libraries/CMSIS/Include
 	LDFLAGS += -Wl,-Map,$(OBJDIR)/$(PROJ_NAME).map -Tstm32f4_flash.ld
-	LDFLAGS += --specs=nano.specs --specs=rdimon.specs -lc -lc -lrdimon
+	# Use newlib-nano, no semihosting
+	LDFLAGS += --specs=nano.specs -lc -lc -lnosys
+	# Enable floating point formatting
+	LDFLAGS += -u _printf_float
 endif
 
 
