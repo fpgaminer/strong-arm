@@ -24,11 +24,15 @@ CFLAGS  = -g -Wall -Wno-missing-braces -std=c99
 CFLAGS += -I../include -Isrc
 LDFLAGS = -g -L../build -lstrong-arm
 
-ifdef CYGWIN_MINGW
+ifeq ($(TARGET),linux)
+	CC=gcc
+	OBJCOPY=objcopy
+	AR=ar
+else ifeq ($(TARGET),cygwin_mingw)
 	CC=i686-pc-mingw32-gcc
 	OBJCOPY=i686-pc-mingw32-objcopy
 	AR=i686-pc-mingw32-ar
-else
+else ifeq ($(TARGET),stm32f4)
 	CFLAGS += -mthumb -mcpu=cortex-m4
 	#CFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork
 	#CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
@@ -44,6 +48,8 @@ else
 	LDFLAGS += --specs=nano.specs -lc -lc -lnosys
 	# Enable floating point formatting
 	LDFLAGS += -u _printf_float
+else
+$(error "TARGET must be set, e.g. make TARGET=stm32f4")
 endif
 
 

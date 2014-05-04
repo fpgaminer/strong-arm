@@ -21,11 +21,15 @@ SRCS = src/strong-arm.c \
 CFLAGS = -g -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c99
 #CFLAGS += -O3 -funroll-loops
 
-ifdef CYGWIN_MINGW
+ifeq ($(TARGET),linux)
+	CC=gcc
+	OBJCOPY=objcopy
+	AR=ar
+else ifeq ($(TARGET),cygwin_mingw)
 	CC=i686-pc-mingw32-gcc
 	OBJCOPY=i686-pc-mingw32-objcopy
 	AR=i686-pc-mingw32-ar
-else
+else ifeq ($(TARGET),stm32f4)
 	# ARM Cortex M4 (STM32F4)
 	CC=arm-none-eabi-gcc
 	OBJCOPY=arm-none-eabi-objcopy
@@ -37,14 +41,14 @@ else
 	CFLAGS += -mfloat-abi=soft
 	# TODO: hard float was causing an exception; see what's up.
 	CFLAGS += -DTARGET_STM32F4
-
-	TARGET_STM32F4 = 1
+else
+$(error "TARGET must be set, e.g. make TARGET=stm32f4")
 endif
 
 
 CFLAGS += -Iinclude -I. -Isrc/private
 
-ifdef TARGET_STM32F4
+ifeq ($(TARGET), stm32f4)
 	SRCS += src/random/random_stm32f4.c
 	CFLAGS += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
 else
