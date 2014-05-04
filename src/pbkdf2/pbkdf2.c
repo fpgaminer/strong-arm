@@ -157,21 +157,16 @@ static inline uint32_t s1 (uint32_t a);
 static inline uint32_t e0 (uint32_t a);
 static inline uint32_t e1 (uint32_t a);
 
-#ifdef __arm__
-	#define ROR_C(d, s, n) __asm__("ror %0,%1,#" n : "=r" (d) : "r" (s));
-#elif defined(__i386__)
-	#define ROR_C(d, s, n) __asm__("movl %1,%0; rorl $"n",%0" : "=r" (d) : "r" (s));
-#else
-	#error Target architecture must be ARM or X86
-#endif
+/* gcc should optimize this to ROR instructions on at least X86 and ARM. */
+#define ROR_C(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
 
 
 static inline uint32_t s0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	ROR_C (tmp1, a, "7");
-	ROR_C (tmp2, a, "18");
+	tmp1 = ROR_C (a, 7);
+	tmp2 = ROR_C (a, 18);
 	return tmp1 ^ tmp2 ^ (a >> 3);
 }
 
@@ -179,8 +174,8 @@ static inline uint32_t s1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	ROR_C (tmp1, a, "17");
-	ROR_C (tmp2, a, "19");
+	tmp1 = ROR_C (a, 17);
+	tmp2 = ROR_C (a, 19);
 	return tmp1 ^ tmp2 ^ (a >> 10);
 }
 
@@ -188,9 +183,9 @@ static inline uint32_t e0 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	ROR_C (tmp1, a, "2");
-	ROR_C (tmp2, a, "13");
-	ROR_C (a, a, "22");
+	tmp1 = ROR_C (a, 2);
+	tmp2 = ROR_C (a, 13);
+	a = ROR_C (a, 22);
 	return tmp1 ^ tmp2 ^ a;
 }
 
@@ -198,9 +193,9 @@ static inline uint32_t e1 (uint32_t a)
 {
 	uint32_t tmp1, tmp2;
 	
-	ROR_C (tmp1, a, "6");
-	ROR_C (tmp2, a, "11");
-	ROR_C (a, a, "25");
+	tmp1 = ROR_C (a, 6);
+	tmp2 = ROR_C (a, 11);
+	a = ROR_C (a, 25);
 	return tmp1 ^ tmp2 ^ a;
 }
 

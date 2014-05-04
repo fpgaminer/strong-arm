@@ -8,18 +8,7 @@
 #include "aes256_tables.h"
 
 
-static inline __attribute__((always_inline)) uint32_t ror (uint32_t a, uint32_t const i)
-{
-	uint32_t tmp;
-#ifdef __arm__
-	__asm__ ("ror %[Rd],%[Rm],%[Is]" : [Rd] "=r" (tmp) : [Rm] "r" (a), [Is] "i" (i));
-#elif __i386__
-	__asm__ ("movl %[Rm],%[Rd]; rorl %[Is],%[Rd]" : [Rd] "=r" (tmp) : [Rm] "r" (a), [Is] "i" (i));
-#else
-	#error Target architecture must be ARM or X86
-#endif
-	return tmp;
-}
+#define ROR_C(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
 
 
 static uint32_t setup_mix (uint32_t temp)
@@ -74,7 +63,7 @@ void aes256_encrypt_block (uint8_t ciphertext[static 16], uint8_t const key[stat
 		if (i == 48)
 			break;
 
-		eK[i+12] = eK[i+4] ^ setup_mix (ror (eK[i+11], 8));
+		eK[i+12] = eK[i+4] ^ setup_mix (ROR_C (eK[i+11], 8));
 		eK[i+13] = eK[i+5] ^ eK[i+12];
 		eK[i+14] = eK[i+6] ^ eK[i+13];
 		eK[i+15] = eK[i+7] ^ eK[i+14];
@@ -94,27 +83,27 @@ void aes256_encrypt_block (uint8_t ciphertext[static 16], uint8_t const key[stat
 	for (int r = 1; ; ++r)
 	{
 		t0 = TE0[(s0 >> 24) & 0xFF] ^
-		     ror (TE0[(s1 >> 16) & 0xFF], 8) ^
-		     ror (TE0[(s2 >> 8) & 0xFF], 16) ^
-		     ror (TE0[s3 & 0xFF], 24) ^
+		     ROR_C (TE0[(s1 >> 16) & 0xFF], 8) ^
+		     ROR_C (TE0[(s2 >> 8) & 0xFF], 16) ^
+		     ROR_C (TE0[s3 & 0xFF], 24) ^
 		     eK[r*4];
 
 		t1 = TE0[(s1 >> 24) & 0xFF] ^
-		     ror (TE0[(s2 >> 16) & 0xFF], 8) ^
-		     ror (TE0[(s3 >> 8) & 0xFF], 16) ^
-		     ror (TE0[s0 & 0xFF], 24) ^
+		     ROR_C (TE0[(s2 >> 16) & 0xFF], 8) ^
+		     ROR_C (TE0[(s3 >> 8) & 0xFF], 16) ^
+		     ROR_C (TE0[s0 & 0xFF], 24) ^
 		     eK[r*4 + 1];
 
 		t2 = TE0[(s2 >> 24) & 0xFF] ^
-		     ror (TE0[(s3 >> 16) & 0xFF], 8) ^
-		     ror (TE0[(s0 >> 8) & 0xFF], 16) ^
-		     ror (TE0[s1 & 0xFF], 24) ^
+		     ROR_C (TE0[(s3 >> 16) & 0xFF], 8) ^
+		     ROR_C (TE0[(s0 >> 8) & 0xFF], 16) ^
+		     ROR_C (TE0[s1 & 0xFF], 24) ^
 		     eK[r*4 + 2];
 
 		t3 = TE0[(s3 >> 24) & 0xFF] ^
-		     ror (TE0[(s0 >> 16) & 0xFF], 8) ^
-		     ror (TE0[(s1 >> 8) & 0xFF], 16) ^
-		     ror (TE0[s2 & 0xFF], 24) ^
+		     ROR_C (TE0[(s0 >> 16) & 0xFF], 8) ^
+		     ROR_C (TE0[(s1 >> 8) & 0xFF], 16) ^
+		     ROR_C (TE0[s2 & 0xFF], 24) ^
 		     eK[r*4 + 3];
 
 		if (r == 13)
