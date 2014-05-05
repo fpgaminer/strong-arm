@@ -15,7 +15,8 @@ SRCS = src/strong-arm.c \
        src/aes/aes256.c \
        src/utils.c \
        src/asn1/der.c \
-       src/keychain/keychain.c
+       src/keychain/keychain.c \
+       src/threefish/threefish.c
 
 
 CFLAGS = -g -Wall -Wextra -Wno-missing-braces -Wno-missing-field-initializers -std=c99

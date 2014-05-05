@@ -17,6 +17,7 @@ char *test_pbkdf2 (void);
 char *test_drbg (void);
 char *test_aes (void);
 char *test_keychain (void);
+char *test_threefish (void);
 
 
 // Manually implemented semihosting, because I could not get GCC ARM Embedded's semihosting working.
@@ -53,6 +54,7 @@ static char *all_tests ()
 	if ((msg = test_pbkdf2())) return msg;
 	if ((msg = test_drbg ())) return msg;
 	if ((msg = test_aes ())) return msg;
+	if ((msg = test_threefish ())) return msg;
 	
 	return 0;
 }
