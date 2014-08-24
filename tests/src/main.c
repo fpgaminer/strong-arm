@@ -20,24 +20,6 @@ char *test_keychain (void);
 char *test_threefish (void);
 
 
-// Manually implemented semihosting, because I could not get GCC ARM Embedded's semihosting working.
-// The semihosting protocol is documented in ARM DUI 0203J.
-// This function calls SYS_WRITE (0x05).
-#ifdef __arm__
-int _write (int fd, char *ptr, int len)
-{
-	uint32_t data[3] = {(uint32_t)fd, (uint32_t)ptr, (uint32_t)len};
-
-	__asm__ ("mov r1,%0; mov r0,$5; bkpt 0xab" :
-	                                           : "r" (data)
-	                                           : "r0", "r1"
-	);
-
-	return len;
-}
-#endif
-
-
 static char *all_tests ()
 {
 	char *msg;
