@@ -56,7 +56,7 @@ else ifeq ($(TARGET),stm32f4)
 	COMPILE_FLAGS += -DTARGET_STM32F4
 
 	C_SOURCES += src/random/random_stm32f4.c
-	COMPILE_FLAGS += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
+	INCLUDES += -Ilibraries/CMSIS/ST/STM32F4xx/Include -Ilibraries/CMSIS/Include
 
 	RBUILD_PATH = build/stm32f4/release
 	DBUILD_PATH = build/stm32f4/debug
