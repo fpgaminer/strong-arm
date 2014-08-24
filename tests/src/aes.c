@@ -29,7 +29,7 @@ START_TEST (test_aes_256_block)
 
 	memmove (ciphertext, plaintext2, sizeof (plaintext2));
 
-	for (int i = 0; i < sizeof(monte_keys_256)/32; ++i)
+	for (unsigned int i = 0; i < sizeof(monte_keys_256)/32; ++i)
 	{
 		for (int j = 0; j < 10000; ++j)
 			aes256_encrypt_block (ciphertext, monte_keys_256[i], ciphertext);

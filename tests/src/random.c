@@ -56,7 +56,7 @@ void test_wordcount (uint32_t bits)
 	
 	printf ("Random Test: Wordcount (k=%u)\n", bits);
 	uint32_t maxerror = 0;
-	for (uint32_t i = 0; i < (1 << bits); ++i)
+	for (uint32_t i = 0; i < (uint32_t)(1 << bits); ++i)
 	{
 		uint32_t error = (buckets[i] > expected) ? (buckets[i] - expected) : (expected - buckets[i]);
 		printf ("[%2u] = %u (expected %u)\n", i, buckets[i], expected);

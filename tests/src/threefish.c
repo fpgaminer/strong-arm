@@ -211,16 +211,16 @@ START_TEST (test_threefish_512_block)
 	                      0x55};
 
 	/* Process Test Vectors */
-	for (int test_i = 0; test_i < sizeof (tests) / sizeof (TEST_512); ++test_i)
+	for (unsigned int test_i = 0; test_i < sizeof (tests) / sizeof (TEST_512); ++test_i)
 	{
 		TEST_512 test = tests[test_i];
 
 		memmove (output, test.input, 64);
 
-		for (int i = 0; i < test.encrypt; ++i)
+		for (unsigned int i = 0; i < test.encrypt; ++i)
 			threefish512_encrypt_block (output, test.key, test.tweak, output);
 		
-		for (int i = 0; i < test.decrypt; ++i)
+		for (unsigned int i = 0; i < test.decrypt; ++i)
 			threefish512_decrypt_block (output, test.key, test.tweak, output);
 
 		mu_assert (memcmp (output, test.output, 64) == 0, "threefish512_*crypt_block should correctly process the test vectors.");
