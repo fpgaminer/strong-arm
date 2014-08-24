@@ -150,7 +150,7 @@ void SHA256_partial (uint8_t *hash, SHA256_STATE *const state, uint8_t const *sr
 	if (first) {
 		state->chunk_len = 0;
 		state->totallen = 0;
-		memcpy (state->state, initial_state, 32);
+		memmove (state->state, initial_state, 32);
 		memset (state->chunk, 0, 64);
 	}
 	

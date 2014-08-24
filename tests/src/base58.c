@@ -37,7 +37,7 @@ START_TEST (test_base58checkencoding)
 	base58check_encode (encoding, 0, str1);
 	mu_assert (memcmp (encoding, encoding1, sizeof(encoding1)) == 0, "base58check_encode should correctly encode the test strings.");
 
-	memcpy (encoding, str1, 20);
+	memmove (encoding, str1, 20);
 	base58check_encode (encoding, 0, encoding);
 	mu_assert (memcmp (encoding, encoding1, sizeof(encoding1)) == 0, "base58check_encode should correctly encode the test strings, even if the src and dst point to the same memory.");
 }

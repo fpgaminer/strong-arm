@@ -53,7 +53,7 @@ void base58check_encode (uint8_t *const dst, uint8_t version, uint8_t const *con
 	SHA256 (hash, dst, 21);
 	SHA256 (hash, hash, 32);
 
-	memcpy (dst + 21, hash, 4);
+	memmove (dst + 21, hash, 4);
 	base58_encode (dst, dst);
 }
 
